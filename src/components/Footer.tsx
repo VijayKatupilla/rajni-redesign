@@ -1,20 +1,20 @@
 export default function Footer() {
   return (
-    <footer className="relative bg-cream text-red-900 text-center py-10 border-t border-gray-300 overflow-hidden">
+    <footer className="relative bg-blue text-white-900 text-center py-10 border-t border-gray-300 overflow-hidden">
       {/* Left decorative image */}
-      <img
-        src="/footer-left.png"
-        alt="Rajni Left Decoration"
-        className="absolute left-4 bottom-2 w-70 md:w-86"
-      />
+     <img
+  src="/footer-left.png"
+  className="absolute left-2 bottom-0 w-20 sm:w-70 md:w-86 hidden sm:block"
+/>
+
+
 
     
       {/* Right decorative image */}
       <img
-        src="/footer-right.png"
-        alt="Rajni Right Decoration"
-        className="absolute right-4 bottom-2 w-70 md:w-86"
-      />
+  src="/footer-right.png"
+  className="absolute right-2 bottom-0 w-20 sm:w-70 md:w-86 hidden sm:block"
+/>
 
       {/* Center Content */}
       <div className="relative z-10 max-w-3xl mx-auto">
