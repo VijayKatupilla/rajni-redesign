@@ -45,7 +45,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-white border-t border-gray-200 flex flex-col items-center space-y-3 py-4 font-medium">
+        <div className="md:hidden bg-black border-t border-gray-200 flex flex-col items-center space-y-3 py-4 font-medium">
           <Link href="/" onClick={() => setOpen(false)}>Home</Link>
           <Link href="/menu" onClick={() => setOpen(false)}>Menu</Link>
           <Link href="/catering" onClick={() => setOpen(false)}>Catering</Link>
