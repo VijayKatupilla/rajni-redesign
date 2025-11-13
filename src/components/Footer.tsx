@@ -1,57 +1,69 @@
 export default function Footer() {
   return (
-    <footer className="relative bg-blue text-white-900 text-center py-10 border-t border-gray-300 overflow-hidden">
-      {/* Left decorative image */}
-     <img
-  src="/footer-left.png"
-  className="absolute left-2 bottom-0 w-20 sm:w-70 md:w-86 hidden sm:block"
-/>
+    <footer
+      style={{
+        backgroundColor: "blur",
+        color: "black",
+        textAlign: "center",
+        padding: "40px 20px",
+        borderTop: "1px solid #555",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+      }}
+    >
+      <p style={{ fontSize: "20px", fontWeight: "600", marginBottom: "5px" }}>
+        Rajni Indian Cuisine
+      </p>
 
+      <p style={{ fontSize: "14px", marginBottom: "3px" }}>
+        429 Commerce Drive, Madison, WI 53719
+      </p>
+      <p style={{ fontSize: "14px", marginBottom: "15px" }}>
+        📞 (608) 123-4567 · ✉️ info@rajnimadison.com
+      </p>
 
-
-    
-      {/* Right decorative image */}
-      <img
-  src="/footer-right.png"
-  className="absolute right-2 bottom-0 w-20 sm:w-70 md:w-86 hidden sm:block"
-/>
-
-      {/* Center Content */}
-      <div className="relative z-10 max-w-3xl mx-auto">
-        <p className="text-lg font-semibold">Rajni Indian Cuisine</p>
-        <p className="text-sm mt-1">429 Commerce Drive, Madison, WI 53719</p>
-        <p className="text-sm">📞 (608) 123-4567 · ✉️ info@rajnimadison.com</p>
-
-        <div className="mt-3 space-x-4">
-          <a
-            href="https://www.facebook.com"
-            target="_blank"
-            className="hover:underline"
-          >
-            Facebook
-          </a>
-          <span>·</span>
-          <a
-            href="https://www.instagram.com"
-            target="_blank"
-            className="hover:underline"
-          >
-            Instagram
-          </a>
-          <span>·</span>
-          <a
-            href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
-            target="_blank"
-            className="hover:underline"
-          >
-            Order Online
-          </a>
-        </div>
-
-        <p className="text-xs mt-3 opacity-80">
-          © {new Date().getFullYear()} Rajni Indian Cuisine · All Rights Reserved
-        </p>
+      <div style={{ display: "flex", gap: "20px", justifyContent: "center", marginBottom: "10px" }}>
+        <a
+          href="#"
+          style={{
+            color: "black",
+            textDecoration: "none",
+            fontWeight: "500",
+          }}
+        >
+          Facebook
+        </a>
+        <span>·</span>
+        <a
+          href="#"
+          style={{
+            color: "black",
+            textDecoration: "none",
+            fontWeight: "500",
+          }}
+        >
+          Instagram
+        </a>
+        <span>·</span>
+        <a
+          href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
+          target="_blank"
+          style={{
+            color: "black",
+            textDecoration: "none",
+            fontWeight: "500",
+          }}
+        >
+          Order Online
+        </a>
       </div>
+
+      <p style={{ fontSize: "12px", opacity: 0.7 }}>
+        © {new Date().getFullYear()} Rajni Indian Cuisine · All Rights Reserved
+      </p>
     </footer>
   );
 }

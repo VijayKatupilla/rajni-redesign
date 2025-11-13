@@ -1,21 +1,16 @@
-import "./globals.css";
-import type { Metadata } from "next";
+import "../styles/theme.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Rajni Indian Cuisine",
-  description: "Authentic Indian flavors in Madison, WI",
+  description: "Authentic Indian flavors in Madison, Wisconsin",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-cream text-gray-900">
+      <body>
         <Navbar />
         <main>{children}</main>
         <Footer />

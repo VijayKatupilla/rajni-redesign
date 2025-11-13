@@ -1,65 +1,116 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("home");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["home", "menu", "events", "catering", "gallery", "contact"];
+      const scrollPos = window.scrollY + 100;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section && section.offsetTop <= scrollPos) {
+          setActive(sections[i]);
+          break;
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-black/90 backdrop-blur-md z-50 border-b border-gray-200">
-      <div className="max-w-7xl mx-auto flex justify-between items-center py-3 px-4 sm:px-8">
-        {/* Logo */}
-        <Link href="/">
-          <img
-            src="/logo1.png"
-            alt="Rajni Logo"
-            className="h-10 sm:h-12 w-auto object-contain"
-          />
-        </Link>
+    <nav
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        zIndex: 50,
+        background: "rgba(0, 0, 0, 0.6)",
+        backdropFilter: "blur(10px)",
+        borderBottom: "1px solid rgba(255,255,255,0.15)",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1250px",
+          margin: "0 auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "6px 40px", // ⬅️ reduced padding for tighter layout
+          fontFamily: "sans-serif",
+        }}
+      >
+        {/* LEFT LINKS */}
+        <div style={{ display: "flex", gap: "30px" }}>
+          {["home", "menu", "events"].map((section) => (
+            <a
+              key={section}
+              href={`#${section}`}
+              style={{
+                color: active === section ? "#FFD700" : "white",
+                textDecoration: "none",
+                fontWeight: 500,
+                fontSize: "16px",
+              }}
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </a>
+          ))}
+        </div>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex space-x-8 font-medium text-white-800">
-          <Link href="/" className="hover:text-maroon">Home</Link>
-          <Link href="/menu" className="hover:text-maroon">Menu</Link>
-          <Link href="/catering" className="hover:text-maroon">Catering</Link>
-          <Link href="/events" className="hover:text-maroon">Events</Link>
-          <Link href="/contact" className="hover:text-maroon">Contact</Link>
+        {/* CENTER LOGO */}
+        <div style={{ flexShrink: 0 }}>
+          <Link href="#home">
+            <img
+              src="/logo1.png"
+              alt="Rajni Logo"
+              width={130}
+              height={65}
+              style={{ display: "block", margin: "0 30px" }}
+            />
+          </Link>
+        </div>
+
+        {/* RIGHT LINKS */}
+        <div style={{ display: "flex", gap: "30px", alignItems: "center" }}>
+          {["catering", "gallery", "contact"].map((section) => (
+            <a
+              key={section}
+              href={`#${section}`}
+              style={{
+                color: active === section ? "#FFD700" : "white",
+                textDecoration: "none",
+                fontWeight: 500,
+                fontSize: "16px",
+              }}
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </a>
+          ))}
           <a
             href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
             target="_blank"
-            className="bg-maroon text-white px-4 py-2 rounded hover:bg-maroon-dark transition"
+            style={{
+              backgroundColor: "#FFD700",
+              color: "#000",
+              padding: "6px 14px",
+              borderRadius: "5px",
+              fontWeight: 600,
+              fontSize: "15px",
+              textDecoration: "none",
+            }}
           >
             Order Online
           </a>
         </div>
-
-        {/* Mobile menu button */}
-        <button
-          className="md:hidden text-maroon text-2xl"
-          onClick={() => setOpen(!open)}
-        >
-          ☰
-        </button>
       </div>
-
-      {/* Mobile menu */}
-      {open && (
-        <div className="md:hidden bg-black border-t border-gray-200 flex flex-col items-center space-y-3 py-4 font-medium">
-          <Link href="/" onClick={() => setOpen(false)}>Home</Link>
-          <Link href="/menu" onClick={() => setOpen(false)}>Menu</Link>
-          <Link href="/catering" onClick={() => setOpen(false)}>Catering</Link>
-          <Link href="/events" onClick={() => setOpen(false)}>Events</Link>
-          <Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
-          <a
-            href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
-            target="_blank"
-            className="bg-maroon text-white px-4 py-2 rounded hover:bg-maroon-dark transition"
-          >
-            Order Online
-          </a>
-        </div>
-      )}
     </nav>
   );
 }
