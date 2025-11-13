@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("home");
 
+  // Active section highlight logic
   useEffect(() => {
     const handleScroll = () => {
       const sections = ["home", "menu", "events", "catering", "gallery", "contact"];
-      const scrollPos = window.scrollY + 100;
+      const scrollPos = window.scrollY + 120;
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);
@@ -36,6 +38,7 @@ export default function Navbar() {
         borderBottom: "1px solid rgba(255,255,255,0.15)",
       }}
     >
+      {/* Navbar container */}
       <div
         style={{
           maxWidth: "1250px",
@@ -43,12 +46,12 @@ export default function Navbar() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "6px 40px", // ⬅️ reduced padding for tighter layout
-          fontFamily: "sans-serif",
+          padding: "8px 24px",
+          color: "white",
         }}
       >
-        {/* LEFT LINKS */}
-        <div style={{ display: "flex", gap: "30px" }}>
+        {/* Left links (hidden on mobile) */}
+        <div className="hidden md:flex" style={{ display: "flex", gap: "25px" }}>
           {["home", "menu", "events"].map((section) => (
             <a
               key={section}
@@ -58,6 +61,7 @@ export default function Navbar() {
                 textDecoration: "none",
                 fontWeight: 500,
                 fontSize: "16px",
+                transition: "color 0.3s",
               }}
             >
               {section.charAt(0).toUpperCase() + section.slice(1)}
@@ -65,21 +69,21 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* CENTER LOGO */}
+        {/* Center logo */}
         <div style={{ flexShrink: 0 }}>
           <Link href="#home">
             <img
               src="/logo1.png"
               alt="Rajni Logo"
-              width={130}
-              height={65}
-              style={{ display: "block", margin: "0 30px" }}
+              width={120}
+              height={60}
+              style={{ display: "block", margin: "0 auto" }}
             />
           </Link>
         </div>
 
-        {/* RIGHT LINKS */}
-        <div style={{ display: "flex", gap: "30px", alignItems: "center" }}>
+        {/* Right links (hidden on mobile) */}
+        <div className="hidden md:flex" style={{ display: "flex", gap: "25px", alignItems: "center" }}>
           {["catering", "gallery", "contact"].map((section) => (
             <a
               key={section}
@@ -89,6 +93,7 @@ export default function Navbar() {
                 textDecoration: "none",
                 fontWeight: 500,
                 fontSize: "16px",
+                transition: "color 0.3s",
               }}
             >
               {section.charAt(0).toUpperCase() + section.slice(1)}
@@ -110,7 +115,70 @@ export default function Navbar() {
             Order Online
           </a>
         </div>
+
+        {/* Hamburger menu for mobile */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          style={{
+            background: "none",
+            border: "none",
+            color: "#FFD700",
+            fontSize: "28px",
+            display: "block",
+          }}
+          className="md:hidden"
+        >
+          ☰
+        </button>
       </div>
+
+      {/* Mobile dropdown menu */}
+      {menuOpen && (
+        <div
+          style={{
+            backgroundColor: "rgba(0,0,0,0.95)",
+            color: "white",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            padding: "20px 0",
+          }}
+        >
+          {["home", "menu", "events", "catering", "gallery", "contact"].map((section) => (
+            <a
+              key={section}
+              href={`#${section}`}
+              style={{
+                padding: "12px 0",
+                color: "#FFD700",
+                textDecoration: "none",
+                fontSize: "18px",
+                fontWeight: 500,
+              }}
+              onClick={() => setMenuOpen(false)}
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </a>
+          ))}
+          <a
+            href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
+            target="_blank"
+            style={{
+              backgroundColor: "#FFD700",
+              color: "#000",
+              margin: "12px auto 0",
+              padding: "10px 18px",
+              borderRadius: "5px",
+              fontWeight: 600,
+              width: "fit-content",
+              textDecoration: "none",
+            }}
+            onClick={() => setMenuOpen(false)}
+          >
+            Order Online
+          </a>
+        </div>
+      )}
     </nav>
   );
 }
