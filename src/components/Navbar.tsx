@@ -61,7 +61,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Navigation Buttons Below Logo (HIDDEN IN MOBILE) */}
+        {/* Navigation Buttons */}
         <div
           className="desktop-links"
           style={{
@@ -106,7 +106,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ✅ MOBILE TOP NAVBAR */}
+      {/* ✅ MOBILE TOP BAR */}
       <nav className="navbar-mobile-top">
         <div className="mobile-top-inner">
           <Link href="#home">
@@ -122,7 +122,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ✅ MOBILE SIDE MENU (Slide-in from top-right) */}
+      {/* ✅ MOBILE SIDE MENU */}
       {menuOpen && (
         <div className="mobile-menu">
           <button
@@ -187,6 +187,7 @@ export default function Navbar() {
             display: none;
           }
 
+          /* Top bar */
           .navbar-mobile-top {
             position: fixed;
             top: 0;
@@ -218,6 +219,7 @@ export default function Navbar() {
             cursor: pointer;
           }
 
+          /* Slide-in menu (stacked links, aligned left, top start) */
           .mobile-menu {
             position: fixed;
             top: 0;
@@ -232,7 +234,7 @@ export default function Navbar() {
             align-items: flex-start;
             justify-content: flex-start;
             padding: 70px 25px;
-            gap: 18px;
+            gap: 16px;
             animation: slideIn 0.3s ease forwards;
           }
 
@@ -256,6 +258,13 @@ export default function Navbar() {
             cursor: pointer;
           }
 
+          .menu-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
           .menu-content a {
             color: white;
             font-size: 18px;
@@ -275,6 +284,7 @@ export default function Navbar() {
             margin-top: 10px;
           }
 
+          /* Bottom fixed navbar */
           .navbar-mobile-bottom {
             position: fixed;
             bottom: 0;
