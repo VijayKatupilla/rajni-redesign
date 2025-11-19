@@ -1,6 +1,7 @@
 import "../styles/theme.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import MobileBottomNav from "../components/MobileBottonNav";
 
 export const metadata = {
   title: "Rajni Indian Cuisine",
@@ -13,6 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Navbar />
         <main>{children}</main>
+        
         <Footer />
       </body>
     </html>

@@ -22,27 +22,25 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const links = ["home", "menu", "events", "catering", "gallery"];
+
   return (
-    <nav
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        zIndex: 50,
-        background: "rgba(0, 0, 0, 0.6)",
-        backdropFilter: "blur(10px)",
-        borderBottom: "1px solid rgba(255,255,255,0.15)",
-      }}
-    >
-      <div
+    <>
+      {/* ✅ DESKTOP NAVBAR (unchanged) */}
+      <nav
+        className="navbar-desktop"
         style={{
-          maxWidth: "1250px",
-          margin: "0 auto",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 50,
+          background: "rgba(0, 0, 0, 0.6)",
+          backdropFilter: "blur(10px)",
+          borderBottom: "1px solid rgba(255,255,255,0.15)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
           padding: "8px 10px",
           color: "white",
           textAlign: "center",
@@ -55,7 +53,7 @@ export default function Navbar() {
               src="/logo1.png"
               alt="Rajni Logo"
               style={{
-                width: "clamp(110px, 20vw, 180px)", // bigger logo scaling
+                width: "clamp(110px, 20vw, 180px)",
                 height: "auto",
               }}
             />
@@ -73,7 +71,7 @@ export default function Navbar() {
             paddingBottom: "4px",
           }}
         >
-          {["home", "menu", "events", "catering", "gallery"].map((section) => (
+          {links.map((section) => (
             <a
               key={section}
               href={`#${section}`}
@@ -104,7 +102,73 @@ export default function Navbar() {
             Order Online
           </a>
         </div>
+      </nav>
+
+      {/* ✅ MOBILE BOTTOM NAVBAR (only visible on mobile) */}
+      <div
+        className="navbar-mobile"
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          background: "rgba(175, 120, 9, 0.96)",
+          backdropFilter: "blur(8px)",
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          padding: "8px 0",
+          zIndex: 90,
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+        }}
+      >
+        {links.map((section) => (
+          <a
+            key={section}
+            href={`#${section}`}
+            style={{
+              color: active === section ? "#FFD700" : "white",
+              textDecoration: "none",
+              fontSize: "13px",
+              fontWeight: 500,
+            }}
+          >
+            {section.charAt(0).toUpperCase() + section.slice(1)}
+          </a>
+        ))}
+        <a
+          href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
+          target="_blank"
+          style={{
+            backgroundColor: "#FFD700",
+            color: "#000",
+            padding: "4px 8px",
+            borderRadius: "4px",
+            fontWeight: 600,
+            fontSize: "12px",
+            textDecoration: "none",
+          }}
+        >
+          Order
+        </a>
       </div>
-    </nav>
+
+      {/* ✅ CSS to hide top navbar on mobile and show bottom nav */}
+      <style jsx>{`
+        /* Hide bottom navbar on desktop */
+        @media (min-width: 768px) {
+          .navbar-mobile {
+            display: none;
+          }
+        }
+
+        /* Hide top navbar on mobile */
+        @media (max-width: 767px) {
+          .navbar-desktop {
+            display: none;
+          }
+        }
+      `}</style>
+    </>
   );
 }
