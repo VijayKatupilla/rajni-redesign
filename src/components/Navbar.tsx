@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ✅ DESKTOP NAVBAR */}
+      {/* ===== DESKTOP NAVBAR ===== */}
       <nav className="navbar-desktop">
         <div className="desktop-logo">
           <Link href="#home">
@@ -55,19 +55,22 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ✅ MOBILE TOP BAR */}
+      {/* ===== MOBILE TOP BAR ===== */}
       <nav className="navbar-mobile-top">
         <div className="mobile-header">
           <Link href="#home">
             <img src="/logo1.png" alt="Rajni Logo" className="mobile-logo" />
           </Link>
-          <button className="hamburger-btn" onClick={() => setMenuOpen(!menuOpen)}>
+          <button
+            className="hamburger-btn"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             ☰
           </button>
         </div>
       </nav>
 
-      {/* ✅ MOBILE SIDE MENU */}
+      {/* ===== MOBILE SIDE MENU ===== */}
       {menuOpen && (
         <div className="mobile-menu">
           <button className="close-btn" onClick={() => setMenuOpen(false)}>
@@ -95,7 +98,7 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* ✅ MOBILE BOTTOM NAVBAR */}
+      {/* ===== MOBILE BOTTOM NAVBAR ===== */}
       <div className="navbar-mobile-bottom">
         {links.map((section) => (
           <a key={section} href={`#${section}`}>
@@ -111,9 +114,16 @@ export default function Navbar() {
         </a>
       </div>
 
-      {/* ✅ STYLES */}
+      {/* ===== THEME STYLES ===== */}
       <style jsx>{`
-        /* Base styles */
+        :root {
+          --gold: #ffd700;
+          --maroon: #800000;
+          --black: #0c0c0c;
+          --cream: #f5f0e1;
+          --gray: #c5bfbf;
+        }
+
         a {
           text-decoration: none;
           color: white;
@@ -122,7 +132,7 @@ export default function Navbar() {
         }
 
         a:hover {
-          color: #ffd700;
+          color: var(--gold);
         }
 
         /* Desktop navbar */
@@ -132,18 +142,14 @@ export default function Navbar() {
           left: 0;
           width: 100%;
           z-index: 50;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(10px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+          background: rgba(12, 12, 12, 0.9);
+          backdrop-filter: blur(8px);
+          border-bottom: 1px solid rgba(255, 0, 0, 0.25);
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 8px 10px;
+          padding: 10px 10px;
           text-align: center;
-        }
-
-        .desktop-logo {
-          margin-bottom: 6px;
         }
 
         .logo-img {
@@ -153,7 +159,7 @@ export default function Navbar() {
 
         .desktop-links {
           display: flex;
-          gap: 18px;
+          gap: 20px;
           flex-wrap: wrap;
           justify-content: center;
           font-size: clamp(12px, 1.6vw, 16px);
@@ -161,16 +167,15 @@ export default function Navbar() {
         }
 
         .order-btn-desktop {
-          background-color: #ffd700;
-          color: #000;
+          background-color: yellow;
+          color: var(--gold);
           padding: 4px 10px;
           border-radius: 4px;
           font-weight: 600;
-          font-size: clamp(11px, 1.5vw, 14px);
         }
 
         .active-link {
-          color: #ffd700;
+          color: white;
         }
 
         /* Mobile top navbar */
@@ -180,10 +185,10 @@ export default function Navbar() {
           left: 0;
           width: 100%;
           z-index: 100;
-          background: rgba(0, 0, 0, 0.8);
+          background: var(--black);
           backdrop-filter: blur(10px);
-          padding: 8px 14px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+          padding: 10px 20px;
+          border-bottom: 1px solid rgba(255, 215, 0, 0.2);
           display: none; /* hidden on desktop */
         }
 
@@ -194,15 +199,18 @@ export default function Navbar() {
         }
 
         .mobile-logo {
-          width: 120px;
+          width: 130px;
           height: auto;
         }
 
         .hamburger-btn {
           background: transparent;
-          border: none;
-          color: white;
-          font-size: 28px;
+          border: 2px solid var(--gold);
+          color: var(--gold);
+          border-radius: 6px;
+          font-size: 26px;
+          padding: 4px 10px;
+          margin-right: 8px; /* moved slightly inward */
           cursor: pointer;
         }
 
@@ -213,15 +221,15 @@ export default function Navbar() {
           right: 0;
           width: 70%;
           height: 100vh;
-          background: rgba(0, 0, 0, 0.95);
+          background: var(--maroon);
           color: white;
           z-index: 200;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
           justify-content: flex-start;
-          padding: 70px 25px;
-          gap: 16px;
+          padding: 80px 30px;
+          gap: 20px;
           animation: slideIn 0.3s ease forwards;
         }
 
@@ -240,8 +248,8 @@ export default function Navbar() {
           right: 20px;
           background: transparent;
           border: none;
-          color: #ffd700;
-          font-size: 24px;
+          color: var(--gold);
+          font-size: 26px;
           cursor: pointer;
         }
 
@@ -250,37 +258,46 @@ export default function Navbar() {
           flex-direction: column;
           align-items: flex-start;
           width: 100%;
-          gap: 14px;
+          gap: 18px;
         }
 
         .order-link {
-          color: #ffd700;
+          color: var(--gold);
           font-weight: 600;
           font-size: 18px;
           text-decoration: underline;
           margin-top: 10px;
         }
 
-        /* Mobile bottom bar */
+        /* Mobile bottom navbar */
         .navbar-mobile-bottom {
           position: fixed;
           bottom: 0;
           left: 0;
           width: 100%;
-          background: rgba(0, 0, 0, 0.85);
+          background: var(--black);
           backdrop-filter: blur(8px);
-          display: flex;
+          display: none;
           justify-content: space-around;
           align-items: center;
           padding: 8px 0;
           z-index: 90;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-          display: none; /* hidden on desktop */
+          border-top: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .navbar-mobile-bottom a {
+          color: var(--cream);
+          font-size: 13px;
+          font-weight: 500;
+        }
+
+        .navbar-mobile-bottom a:hover {
+          color: var(--gold);
         }
 
         .bottom-order-btn {
-          background-color: #ffd700;
-          color: #000;
+          background-color: var(--gold);
+          color: var(--black);
           padding: 4px 8px;
           border-radius: 4px;
           font-weight: 600;
