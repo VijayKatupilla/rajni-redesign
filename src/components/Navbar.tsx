@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ✅ DESKTOP NAVBAR (unchanged) */}
+      {/* ✅ DESKTOP NAVBAR */}
       <nav
         className="navbar-desktop"
         style={{
@@ -61,8 +61,9 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Navigation Buttons */}
+        {/* Navigation Buttons Below Logo (HIDDEN IN MOBILE) */}
         <div
+          className="desktop-links"
           style={{
             display: "flex",
             gap: "18px",
@@ -105,7 +106,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ✅ MOBILE TOP NAVBAR (Logo left + hamburger right) */}
+      {/* ✅ MOBILE TOP NAVBAR */}
       <nav className="navbar-mobile-top">
         <div className="mobile-top-inner">
           <Link href="#home">
@@ -121,26 +122,35 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ✅ MOBILE SIDE MENU */}
+      {/* ✅ MOBILE SIDE MENU (Slide-in from top-right) */}
       {menuOpen && (
         <div className="mobile-menu">
-          {links.map((section) => (
-            <a
-              key={section}
-              href={`#${section}`}
-              onClick={() => setMenuOpen(false)}
-            >
-              {section.charAt(0).toUpperCase() + section.slice(1)}
-            </a>
-          ))}
-          <a
-            href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
-            target="_blank"
+          <button
+            className="close-btn"
             onClick={() => setMenuOpen(false)}
-            className="order-link"
           >
-            Order Online →
-          </a>
+            ✕
+          </button>
+
+          <div className="menu-content">
+            {links.map((section) => (
+              <a
+                key={section}
+                href={`#${section}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </a>
+            ))}
+            <a
+              href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
+              target="_blank"
+              onClick={() => setMenuOpen(false)}
+              className="order-link"
+            >
+              Order Online →
+            </a>
+          </div>
         </div>
       )}
 
@@ -160,7 +170,7 @@ export default function Navbar() {
         </a>
       </div>
 
-      {/* ✅ Scoped CSS */}
+      {/* ✅ STYLES */}
       <style jsx>{`
         /* -------- DESKTOP ONLY -------- */
         @media (min-width: 768px) {
@@ -212,26 +222,48 @@ export default function Navbar() {
             position: fixed;
             top: 0;
             right: 0;
-            width: 65%;
+            width: 70%;
             height: 100vh;
             background: rgba(0, 0, 0, 0.95);
             color: white;
             z-index: 200;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 70px 25px;
+            gap: 18px;
+            animation: slideIn 0.3s ease forwards;
           }
 
-          .mobile-menu a {
+          @keyframes slideIn {
+            from {
+              transform: translateX(100%);
+            }
+            to {
+              transform: translateX(0);
+            }
+          }
+
+          .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: #ffd700;
+            font-size: 24px;
+            cursor: pointer;
+          }
+
+          .menu-content a {
             color: white;
             font-size: 18px;
             text-decoration: none;
             font-weight: 500;
           }
 
-          .mobile-menu a:hover {
+          .menu-content a:hover {
             color: #ffd700;
           }
 
@@ -240,6 +272,7 @@ export default function Navbar() {
             font-weight: 600;
             font-size: 18px;
             text-decoration: underline;
+            margin-top: 10px;
           }
 
           .navbar-mobile-bottom {
