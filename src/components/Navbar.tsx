@@ -245,7 +245,7 @@ export default function Navbar() {
         .close-btn {
           position: absolute;
           top: 15px;
-          right: 24px;
+          right: 20px;
           background: transparent;
           border: none;
           color: var(--gold);
@@ -286,7 +286,7 @@ export default function Navbar() {
         }
 
         .navbar-mobile-bottom a {
-          color: white;
+          color: black;
           font-size: 13px;
           font-weight: 500;
         }
