@@ -6,7 +6,7 @@ export default function Footer() {
       style={{
         background: "rgba(0, 0, 0, 0.85)",
         color: "white",
-        padding: "50px 15px 15px",
+        padding: "15px 15px 15px",
         textAlign: "center",
         borderTop: "1px solid rgba(255,255,255,0.1)",
         fontFamily: "'Poppins', sans-serif", // same font as rest of site

@@ -1,5 +1,6 @@
+"use client";
+
 import GoogleReviews from "../components/GoogleReviews";
-import Timings from "../components/Timings";
 import Footer from "../components/Footer";
 
 export default function HomePage() {
@@ -13,56 +14,100 @@ export default function HomePage() {
       id: "contact",
       title: "Contact Us",
       text: "We’d love to hear from you! Reach out for reservations, catering, or special events.",
-    }, // ✅ Shortened text — no address duplication
+    },
   ];
 
   return (
-    <div
-      style={{
-        backgroundImage: "url('/hero-bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-        minHeight: "100vh",
-        color: "white",
-      }}
-    >
+    <div className="page-container">
+      <div className="hero-background" />
+
       {sections.map((sec) => (
-        <section
-          key={sec.id}
-          id={sec.id}
-          style={{
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            backdropFilter: "blur(6px) brightness(0.8)", // blur each section
-            backgroundColor: "rgba(0,0,0,0.3)",
-            padding: "60px 20px",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "3rem",
-              fontWeight: "bold",
-              marginBottom: "10px",
-              color: "#FFD700",
-            }}
-          >
-            {sec.title}
-          </h1>
-          <p style={{ maxWidth: "700px", fontSize: "1.2rem", lineHeight: "1.7" }}>
-            {sec.text}
-          </p>
+        <section key={sec.id} id={sec.id} className="content-section">
+          <h1 className="section-title">{sec.title}</h1>
+          <p className="section-text">{sec.text}</p>
         </section>
       ))}
 
-      {/* ✅ Google Reviews + Footer */}
-      
       <GoogleReviews />
       
+
+      <style jsx>{`
+        /* ✅ Page container */
+        .page-container {
+          position: relative;
+          width: 100%;
+          min-height: 100vh;
+          overflow-x: hidden; /* 🧹 prevents horizontal movement */
+          overflow-y: auto;
+          color: white;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        /* ✅ Fixed hero image — no horizontal scroll */
+        .hero-background {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          width: 100%; /* ✅ use 100% instead of 100vw */
+          height: 100%;
+          background-image: url('/hero-bg.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          z-index: -1;
+          filter: brightness(0.8);
+        }
+
+        /* ✅ Section styling */
+        .content-section {
+          min-height: 100vh;
+          width: 100%;
+          max-width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          padding: 60px 20px;
+          background: rgba(0, 0, 0, 0.35);
+          backdrop-filter: blur(6px);
+          box-sizing: border-box;
+        }
+
+        .section-title {
+          font-size: clamp(2rem, 5vw, 3rem);
+          font-weight: 700;
+          margin-bottom: 12px;
+          color: #ffd700;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .section-text {
+          max-width: 720px;
+          font-size: clamp(1rem, 1.8vw, 1.3rem);
+          line-height: 1.7;
+          color: #f5f0e1;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        /* ✅ Responsive for mobile */
+        @media (max-width: 768px) {
+          .hero-background {
+            background-attachment: scroll;
+            background-size: cover;
+            height: 100%;
+          }
+
+          .content-section {
+            padding: 50px 16px;
+          }
+        }
+      `}</style>
     </div>
   );
 }
+

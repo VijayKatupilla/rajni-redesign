@@ -142,9 +142,9 @@ export default function Navbar() {
           left: 0;
           width: 100%;
           z-index: 50;
-          background: rgba(19, 18, 18, 0.97);
+          background: rgba(21, 20, 20, 0.97);
           backdrop-filter: blur(8px);
-          border-bottom: 1px solid rgba(255, 0, 0, 0.25);
+          border-bottom: 1px solid rgba(239, 222, 222, 0.25);
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -245,7 +245,7 @@ export default function Navbar() {
         .close-btn {
           position: absolute;
           top: 15px;
-          right: 7px;
+          right: 9px;
           background: transparent;
           border: none;
           color: var(--gold);
@@ -269,40 +269,51 @@ export default function Navbar() {
           margin-top: 10px;
         }
 
-        /* Mobile bottom navbar */
-        .navbar-mobile-bottom {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          background: var(--black);
-          backdrop-filter: blur(8px);
-          display: none;
-          justify-content: space-around;
-          align-items: center;
-          padding: 8px 0;
-          z-index: 90;
-          border-top: 1px solid rgba(255, 215, 0, 0.2);
-        }
+       /* Mobile bottom navbar */
+.navbar-mobile-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--black);
+  backdrop-filter: blur(8px);
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  z-index: 90;
+  border-top: 1px solid rgba(255, 215, 0, 0.25);
+}
 
-        .navbar-mobile-bottom a {
-          color: white;
-          font-size: 13px;
-          font-weight: 500;
-        }
+/* Regular nav links */
+.navbar-mobile-bottom a {
+  color: white;
+  font-size: 15px;          /* slightly larger */
+  font-weight: 600;         /* bolder for visibility */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
 
-        .navbar-mobile-bottom a:hover {
-          color: var(--black);
-        }
+.navbar-mobile-bottom a:hover {
+  color: var(--gold);
+}
 
-        .bottom-order-btn {
-          background-color: var(--gold);
-          color: black;
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-weight: 600;
-          font-size: 12px;
-        }
+/* Special Order Online button */
+.bottom-order-btn {
+  background-color: var(--gold);
+  color: black;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bottom-order-btn:hover {
+  background-color: #e6c300; /* slightly darker gold on hover */
+  color: black;
+}
 
         /* Responsive visibility */
         @media (max-width: 767px) {
