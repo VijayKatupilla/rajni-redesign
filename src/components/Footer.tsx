@@ -1,29 +1,12 @@
 "use client";
 
 import Image from "next/image";
-
-const footerLocations = [
-  {
-    name: "Rajni Madison",
-    address: "429 Commerce Drive, Madison, WI 53719",
-    map: "https://www.google.com/maps/place/Rajni+Indian+Cuisine,+429+Commerce+Dr,+Madison,+WI+53719",
-    phone: "(608) 123-4567",
-  },
-  {
-    name: "Rajni Atlanta",
-    address: "Peachtree Street, Atlanta, GA",
-    map: "https://maps.google.com",
-    phone: "(470) 555-1212",
-  },
-  {
-    name: "Rajni Parsippany",
-    address: "Morris Corporate Center, Parsippany, NJ",
-    map: "https://maps.google.com",
-    phone: "(973) 555-2020",
-  },
-];
+import { locations, useLocation } from "../context/LocationContext";
 
 export default function Footer() {
+  const { selectedIndex, setSelectedIndex } = useLocation();
+  const active = locations[selectedIndex];
+
   return (
     <footer className="footer">
       <div className="footer__inner">
@@ -36,34 +19,52 @@ export default function Footer() {
         <div className="footer__group">
           <h3>Locations</h3>
           <div className="footer__locations">
-            {footerLocations.map((location) => (
-              <div key={location.name} className="footer__location">
-                <strong>{location.name}</strong>
-                <span>{location.address}</span>
-                <a href={location.map} target="_blank" rel="noreferrer">
-                  View map →
-                </a>
-                <a href={`tel:${location.phone.replace(/[^\d]/g, "")}`}>{location.phone}</a>
+            <div className="footer__location">
+              <strong>{active.name}</strong>
+              <span>{active.address}</span>
+              <a href={active.map} target="_blank" rel="noreferrer">
+                View map -&gt;
+              </a>
+              <a href={`tel:${active.phone.replace(/[^\d]/g, "")}`}>{active.phone}</a>
+            </div>
+            <div className="footer__location footer__location--list">
+              <strong>Select location</strong>
+              <div className="footer__location-buttons">
+                {locations.map((loc, idx) => (
+                  <a
+                    key={loc.name}
+                    href={loc.map}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={idx === selectedIndex ? "active" : ""}
+                    onClick={() => setSelectedIndex(idx)}
+                  >
+                    {loc.name}
+                  </a>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
         <div className="footer__group">
-          <h3>Hours</h3>
+          <h3>Hours ({active.name})</h3>
           <p>
-            Mon–Thu: 11:00 AM – 2:30 PM / 5:00 PM – 9:00 PM
-            <br /> Fri–Sat: 11:00 AM – 2:30 PM / 5:00 PM – 10:00 PM
-            <br /> Sun: 11:00 AM – 2:30 PM / 5:00 PM – 9:00 PM
+            {active.hours.map((line) => (
+              <span key={line}>
+                {line}
+                <br />
+              </span>
+            ))}
           </p>
-          <span className="tag">Dine-in · Takeout · Catering</span>
+          <span className="tag">Dine-in | Takeout | Catering</span>
         </div>
 
         <div className="footer__group">
           <h3>Contact & Links</h3>
           <p>
-            <a href="tel:+16081234567">📞 (608) 123-4567</a>
-            <br /> <a href="mailto:info@rajnimadison.com">✉️ info@rajnimadison.com</a>
+            <a href="tel:+16081234567">(608) 123-4567</a>
+            <br /> <a href="mailto:info@rajnimadison.com">info@rajnimadison.com</a>
           </p>
           <div className="footer__links">
             <a href="#reserve">Reserve</a>
@@ -74,26 +75,27 @@ export default function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              Order Online →
+              Order Online -{">"}
             </a>
           </div>
         </div>
       </div>
 
-      <div className="footer__bottom">© {new Date().getFullYear()} Rajni Indian Cuisine · All Rights Reserved</div>
+      <div className="footer__bottom">(c) {new Date().getFullYear()} Rajni Indian Cuisine - All Rights Reserved</div>
 
       <style jsx>{`
         .footer {
-          background: #fff8ee;
-          padding: 48px 18px 28px;
+          background: rgba(255, 255, 255, 0.78);
+          padding: 44px 18px 24px;
           border-top: 1px solid var(--border);
           color: var(--muted);
+          font-size: 13px;
         }
 
         .footer__inner {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 26px;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 22px;
           max-width: 1100px;
           margin: 0 auto 30px;
         }
@@ -117,19 +119,21 @@ export default function Footer() {
         h3 {
           margin: 0 0 8px;
           color: var(--cream);
-          font-size: 16px;
+          font-size: 15px;
           letter-spacing: 0.04em;
           text-transform: uppercase;
         }
 
         p {
           margin: 0 0 8px;
-          line-height: 1.6;
+          line-height: 1.55;
+          font-size: 13px;
         }
 
         a {
           color: var(--accent);
           text-decoration: none;
+          font-size: 13px;
         }
 
         a:hover {
@@ -154,6 +158,7 @@ export default function Footer() {
         .footer__locations {
           display: grid;
           gap: 10px;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         }
 
         .footer__location {
@@ -164,6 +169,32 @@ export default function Footer() {
           background: rgba(255, 255, 255, 0.8);
           border: 1px solid var(--border);
           box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        .footer__location--list {
+          background: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer__location-buttons {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 8px;
+        }
+
+        .footer__location-buttons a {
+          display: inline-block;
+          padding: 8px 10px;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: #fff;
+          text-align: center;
+          font-weight: 700;
+        }
+
+        .footer__location-buttons a.active {
+          background: linear-gradient(135deg, #f6c979, #f0a437);
+          color: #3b2109;
+          border-color: transparent;
         }
 
         .tag {
@@ -179,7 +210,7 @@ export default function Footer() {
           text-align: center;
           border-top: 1px solid var(--border);
           padding-top: 12px;
-          font-size: 13px;
+          font-size: 12px;
         }
       `}</style>
     </footer>

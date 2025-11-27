@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const sections = ["home", "experience", "events", "specials", "catering", "reserve", "contact"];
+const sections = ["home", "about", "experience", "events", "specials", "reserve", "gallery", "reviews"];
 
 export default function Navbar() {
   const [active, setActive] = useState("home");
@@ -58,7 +58,7 @@ export default function Navbar() {
         </div>
 
         <button className="navbar__mobile-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
-          ☰
+          <span aria-hidden="true">&#9776;</span>
         </button>
       </nav>
 
@@ -68,7 +68,7 @@ export default function Navbar() {
         <div className="drawer-header">
           <Image src="/images/logo1.png" alt="Rajni Logo" width={160} height={60} />
           <button onClick={() => setMenuOpen(false)} aria-label="Close menu">
-            ×
+            X
           </button>
         </div>
         <div className="drawer-links">
@@ -106,10 +106,11 @@ export default function Navbar() {
           align-items: center;
           gap: 18px;
           padding: 14px 32px;
-          background: rgba(255, 255, 255, 0.82);
+          background: rgba(255, 255, 255, 0.92);
           backdrop-filter: blur(16px);
           border-bottom: 1px solid var(--border);
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+          font-family: var(--body-font);
         }
 
         .navbar__logo :global(img) {
@@ -124,6 +125,7 @@ export default function Navbar() {
           text-transform: uppercase;
           letter-spacing: 0.06em;
           font-size: clamp(12px, 1.1vw, 14px);
+          font-family: var(--heading-font);
         }
 
         .navbar__links a {
@@ -154,6 +156,7 @@ export default function Navbar() {
           text-align: center;
           font-size: 14px;
           letter-spacing: 0.01em;
+          font-family: var(--body-font);
         }
 
         .ghost {

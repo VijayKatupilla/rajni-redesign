@@ -1,132 +1,131 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import GoogleReviews from "../components/GoogleReviews";
+import { locations, useLocation } from "../context/LocationContext";
 
-const locations = [
-  {
-    name: "Rajni Madison",
-    city: "Madison, WI",
-    address: "429 Commerce Drive, Madison, WI 53719",
-    phone: "(608) 123-4567",
-    map: "https://www.google.com/maps/place/Rajni+Indian+Cuisine,+429+Commerce+Dr,+Madison,+WI+53719",
-    order: "https://order.toasttab.com/online/rajni-madison-429-commerce-drive",
-  },
-  {
-    name: "Rajni Atlanta",
-    city: "Atlanta, GA",
-    address: "Peachtree Street, Atlanta, GA",
-    phone: "(470) 555-1212",
-    map: "https://maps.google.com",
-    order: "https://order.toasttab.com/online/rajni-madison-429-commerce-drive",
-  },
-  {
-    name: "Rajni Parsippany",
-    city: "Parsippany, NJ",
-    address: "Morris Corporate Center, Parsippany, NJ",
-    phone: "(973) 555-2020",
-    map: "https://maps.google.com",
-    order: "https://order.toasttab.com/online/rajni-madison-429-commerce-drive",
-  },
-];
+const heroBackground = "/images/gallery-3.jpg";
 
-const specials = [
-  {
-    title: "Weekend Chef's Thali",
-    description: "Limited-run thali with rotating curries, house pickle, and dessert for two.",
-    tag: "Saturday + Sunday",
-  },
-  {
-    title: "Tandoori Showcase",
-    description: "Smoky platters pulled straight from the tandoor—perfect for sharing over cocktails.",
-    tag: "Friday Nights",
-  },
-  {
-    title: "Street Food Hour",
-    description: "Pani puri, chaat, and lassi pairings inspired by the reference Longtable energy.",
-    tag: "4–6 PM Daily",
-  },
+const aboutPoints = [
+  "Small-batch curries, hand-ground spices, and recipes passed through our family.",
+  "A dining room layered with red lounge seating, art, and the Longtable sense of welcome.",
+  "Cocktails and lassis designed to cool, brighten, and celebrate every visit.",
 ];
 
 const experience = [
   {
     title: "Crafted Like Home",
-    description: "Family recipes, hand-ground spices, and a kitchen that cooks in small batches for depth of flavor.",
+    description: "Family recipes and masalas toasted daily for depth and aroma.",
   },
   {
     title: "Sip & Savor",
-    description: "Signature lassis, curated wines, and mocktails that balance the spice with smooth, bright notes.",
+    description: "Signature lassis, curated wines, and mocktails that balance the spice.",
   },
   {
     title: "Atmosphere",
-    description: "Red lounge seating, celebratory artwork, and playlists tuned for nights that feel special.",
+    description: "Red booths, soft light, and playlists tuned for nights that linger.",
   },
 ];
 
 const happenings = [
   {
     title: "Private Dining",
-    text: "Reserve intimate space for celebrations, corporate dinners, or meetups.",
+    text: "Intimate rooms for celebrations, corporate dinners, or meetups.",
   },
   {
-    title: "Gift Cards",
-    text: "Share a Rajni night out—digital and physical cards available in minutes.",
+    title: "Chef Tables",
+    text: "Regional menus, tasting flights, and hosted experiences inspired by Longtable.",
   },
   {
-    title: "Community Events",
-    text: "Bollywood brunches, regional tasting menus, and chef tables inspired by Longtable gatherings.",
+    title: "Community Nights",
+    text: "Bollywood brunches, spice workshops, and pairing events.",
+  },
+];
+
+const specials = [
+  {
+    title: "Weekend Chef's Thali",
+    description: "Rotating curries, house pickle, and dessert for two - built for slow, celebratory meals.",
+    tag: "Saturday + Sunday",
+  },
+  {
+    title: "Express Lunch",
+    description: "Fast, vibrant plates with naan and salad - perfect for weekday breaks without losing flavor.",
+    tag: "Weekdays 11-2:30",
+  },
+  {
+    title: "Two Curry Combo",
+    description: "Choose any two curries with rice, naan, and chutneys - shareable and always changing.",
+    tag: "All Week",
   },
 ];
 
 const galleryImages = [
-  { src: "/images/gallery-1.svg", alt: "Rajni dining room with red booths" },
-  { src: "/images/gallery-2.svg", alt: "Rajni mural art" },
-  { src: "/images/gallery-3.svg", alt: "Rajni Madison skyline art" },
-  { src: "/images/gallery-4.svg", alt: "Rajni dining setup" },
-  { src: "/images/gallery-5.svg", alt: "Rajni celebration balloons" },
-  { src: "/images/gallery-6.svg", alt: "Rajni carved fruit display" },
-  { src: "/images/gallery-7.svg", alt: "Rajni exterior sign at night" },
-  { src: "/images/gallery-8.svg", alt: "Rajni exterior entrance" },
-  { src: "/images/gallery-9.svg", alt: "Rajni dining booths at night" },
+  { src: "/images/gallery-1.jpg", alt: "Rajni dining room with red booths" },
+  { src: "/images/gallery-2.jpg", alt: "Rajni mural art" },
+  { src: "/images/gallery-3.jpg", alt: "Rajni Madison skyline art" },
+  { src: "/images/gallery-4.jpg", alt: "Rajni dining setup" },
+  { src: "/images/gallery-5.jpg", alt: "Rajni celebration balloons" },
+  { src: "/images/gallery-6.jpg", alt: "Rajni carved fruit display" },
+  { src: "/images/gallery-7.jpg", alt: "Rajni exterior sign at night" },
+  { src: "/images/gallery-8.jpg", alt: "Rajni exterior entrance" },
+  { src: "/images/gallery-9.jpg", alt: "Rajni dining booths at night" },
 ];
 
-const sectionBackgrounds = {
-  experience: "/images/gallery-1.svg",
-  events: "/images/gallery-5.svg",
-  specials: "/images/gallery-6.svg",
-  catering: "/images/gallery-8.svg",
-  reserve: "/images/gallery-9.svg",
-  contact: "/images/gallery-4.svg",
-  gallery: "/images/gallery-3.svg",
-};
-
 export default function HomePage() {
-  const [selectedLocation, setSelectedLocation] = useState(0);
+  const { selectedIndex, setSelectedIndex } = useLocation();
   const [isReserveOpen, setIsReserveOpen] = useState(false);
   const [isCateringOpen, setIsCateringOpen] = useState(false);
-  const activeLocation = useMemo(() => locations[selectedLocation], [selectedLocation]);
+  const [galleryIndex, setGalleryIndex] = useState(0);
+
+  const activeLocation = useMemo(() => locations[selectedIndex], [selectedIndex]);
+  const phoneHref = activeLocation.phone.replace(/[^\d]/g, "");
+  const currentGalleryImage = galleryImages[galleryIndex];
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+          }
+        });
+      },
+      { threshold: 0.18 }
+    );
+
+    const revealEls = document.querySelectorAll(".reveal");
+    revealEls.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => setGalleryIndex((i) => (i + 1) % galleryImages.length), 3600);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="page">
-      <section id="home" className="hero">
+      <section id="home" className="hero with-bg" style={{ ["--panel-bg" as string]: `url(${heroBackground})` }}>
         <div className="hero__media">
-          <Image src="/images/gallery-7.svg" alt="Rajni exterior" fill priority sizes="100vw" style={{ objectFit: "cover" }} />
+          <Image src={heroBackground} alt="Rajni exterior" fill priority sizes="100vw" style={{ objectFit: "cover" }} />
         </div>
         <div className="hero__overlay" />
-        <div className="hero__content">
+        <div className="hero__content reveal reveal-up">
           <div className="eyebrow">Modern Indian Dining</div>
           <h1>Rajni Indian Cuisine</h1>
           <p className="lede">
-            A celebratory dining room inspired by Longtable—with red lounge seating, handcrafted spices, and cocktails
-            built for toasting every win.
+            A celebratory dining room inspired by Longtable - red lounge seating, handcrafted spices, and cocktails built for
+            toasting every win.
           </p>
           <div className="location-tabs">
             {locations.map((loc, index) => (
               <button
                 key={loc.name}
-                className={`pill ${index === selectedLocation ? "active" : ""}`}
-                onClick={() => setSelectedLocation(index)}
+                className={`pill ${index === selectedIndex ? "active" : ""}`}
+                onClick={() => setSelectedIndex(index)}
               >
                 {loc.name}
               </button>
@@ -140,11 +139,17 @@ export default function HomePage() {
             </div>
             <div className="location-meta">
               <span>{activeLocation.address}</span>
-              <a href={`tel:${activeLocation.phone.replace(/[^\d]/g, "")}`}>{activeLocation.phone}</a>
+              <a href={`tel:${phoneHref}`}>{activeLocation.phone}</a>
               <div className="hero__actions">
-                <a className="btn primary" href={activeLocation.order} target="_blank" rel="noreferrer">
-                  Order Online
-                </a>
+                {activeLocation.order ? (
+                  <a className="btn primary" href={activeLocation.order} target="_blank" rel="noreferrer">
+                    Order Online
+                  </a>
+                ) : (
+                  <a className="btn primary" href={`tel:${phoneHref}`}>
+                    Call to Order
+                  </a>
+                )}
                 <a className="btn secondary" href={activeLocation.map} target="_blank" rel="noreferrer">
                   View on Maps
                 </a>
@@ -155,17 +160,56 @@ export default function HomePage() {
       </section>
 
       <section
+        id="about"
+        className="panel with-bg"
+        style={{ ["--panel-bg" as string]: `url(${heroBackground})` }}
+      >
+        <div className="panel__content split reveal reveal-left">
+          <div className="split__content">
+            <p className="eyebrow">About Us</p>
+            <h2>Our story, served beside you</h2>
+            <div className="story-card">
+              <h3>Our Story</h3>
+              <p className="muted">
+                Rajni is where family recipes meet the Longtable spirit. We cook slow, welcome warmly, and celebrate often.
+              </p>
+            </div>
+            <p className="lede narrow">
+              From hand-ground masalas to playlists that feel like golden hour, every detail is designed to feel like home - and a
+              little bit like a night out in Madison, Atlanta, or Parsippany.
+            </p>
+            <div className="list">
+              {aboutPoints.map((point) => (
+                <span key={point}>{point}</span>
+              ))}
+            </div>
+          </div>
+          <div className="split__media">
+            <div className="media-frame">
+              <Image
+                src="/images/gallery-8.jpg"
+                alt="Guests enjoying Rajni dining room"
+                fill
+                sizes="(min-width: 900px) 38vw, 88vw"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
         id="experience"
         className="panel with-bg"
-        style={{ ["--panel-bg" as string]: `url(${sectionBackgrounds.experience})` }}
+        style={{ ["--panel-bg" as string]: `url(${heroBackground})` }}
       >
-        <div className="panel__content">
+        <div className="panel__content reveal reveal-up">
           <div className="section-header">
             <p className="eyebrow">Experience</p>
             <h2>Designed for gatherings</h2>
             <p className="lede narrow">
-              House curries, tandoor platters, and playlists tuned to feel like Longtable—Rajni wraps your night in
-              warm hospitality.
+              House curries, tandoor platters, and playlists tuned to feel like Longtable energy - Rajni wraps your night in warm
+              hospitality.
             </p>
           </div>
           <div className="card-grid">
@@ -181,16 +225,16 @@ export default function HomePage() {
 
       <section
         id="events"
-        className="panel alt with-bg"
-        style={{ ["--panel-bg" as string]: `url(${sectionBackgrounds.events})` }}
+        className="panel with-bg compact"
+        style={{ ["--panel-bg" as string]: `url(${heroBackground})` }}
       >
-        <div className="panel__content">
+        <div className="panel__content reveal reveal-up">
           <div className="section-header">
             <p className="eyebrow">Events</p>
             <h2>Happenings & gatherings</h2>
             <p className="lede narrow">
-              From chef tables to corporate dinners, Rajni layers every detail—lighting, spices, and music—for nights
-              that linger.
+              From chef tables to corporate dinners, Rajni layers every detail - lighting, spice, and music - for nights that
+              linger.
             </p>
           </div>
           <div className="card-grid thirds">
@@ -207,14 +251,14 @@ export default function HomePage() {
       <section
         id="specials"
         className="panel with-bg"
-        style={{ ["--panel-bg" as string]: `url(${sectionBackgrounds.specials})` }}
+        style={{ ["--panel-bg" as string]: "url(/hero-bg.jpg)" }}
       >
-        <div className="panel__content">
+        <div className="panel__content reveal reveal-up">
           <div className="section-header">
-            <p className="eyebrow">Weekend Specials</p>
-            <h2>Seasonal plates inspired by the reference vibe</h2>
+            <p className="eyebrow">Weekend & Daily Specials</p>
+            <h2>Seasonal plates that keep changing</h2>
             <p className="lede narrow">
-              Every weekend features a new spotlight—perfect for repeat visits and Longtable-style celebrations.
+              Just like Longtable, the board shifts weekly - weekend chef features, speedy lunches, and shareable curry duos.
             </p>
           </div>
           <div className="card-grid">
@@ -231,109 +275,87 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section
-        id="catering"
-        className="panel alt split with-bg"
-        style={{ ["--panel-bg" as string]: `url(${sectionBackgrounds.catering})` }}
-      >
-        <div className="panel__content split">
-          <div className="split__content">
-            <p className="eyebrow">Catering & Events</p>
-            <h2>Bring Rajni to your venue</h2>
-            <p className="lede">
-              Weddings, corporate lunches, graduations—we design custom menus and can deliver, set up, or host.
-            </p>
-            <div className="list">
-              <span>Full-service catering with staffing</span>
-              <span>Buffet or plated service available</span>
-              <span>Pairings menu for wine, beer, and mocktails</span>
-            </div>
-            <a className="btn primary" href="#contact">
-              Talk with our team
-            </a>
-          </div>
-          <div className="split__media">
-            <div className="media-card">
-              <p className="eyebrow">Reservation Hours</p>
-              <h3>Lunch & Dinner</h3>
-              <ul>
-                <li>Mon–Thu: 11:00 AM – 2:30 PM / 5:00 PM – 9:00 PM</li>
-                <li>Fri–Sat: 11:00 AM – 2:30 PM / 5:00 PM – 10:00 PM</li>
-                <li>Sun: 11:00 AM – 2:30 PM / 5:00 PM – 9:00 PM</li>
-              </ul>
-              <div className="pill-row">
-                <span className="pill">Dine-in</span>
-                <span className="pill">Takeout</span>
-                <span className="pill">Catering</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="reserve"
-        className="panel with-bg"
-        style={{ ["--panel-bg" as string]: `url(${sectionBackgrounds.reserve})` }}
-      >
-        <div className="panel__content">
-          <div className="card focus">
-            <h3>Reserve a table</h3>
-            <p className="muted">Share when you’re visiting, and we’ll hold your seats with Longtable-level care.</p>
-            <div className="pill-row">
-              <span className="pill alt">Lunch & Dinner</span>
-              <span className="pill">Groups up to 20</span>
-            </div>
-            <button className="btn primary" onClick={() => setIsReserveOpen(true)}>
-              Open reservation form
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="contact"
-        className="panel alt with-bg"
-        style={{ ["--panel-bg" as string]: `url(${sectionBackgrounds.contact})` }}
-      >
-        <div className="panel__content">
+      <section id="reserve" className="panel alt compact">
+        <div className="panel__content reveal reveal-up forms-grid">
           <div className="section-header">
-            <p className="eyebrow">Catering Inquiry</p>
-            <h2>Plan your event with Rajni</h2>
-            <p className="lede narrow">Tell us about your celebration, and we’ll design a menu and experience.</p>
+            <p className="eyebrow">Book or plan</p>
+            <h2>Reserve a table or plan catering</h2>
+            <p className="lede narrow">Two quick options-tap to open the full form for each.</p>
           </div>
-          <div className="card">
-            <h3>Request catering</h3>
-            <p className="muted">Dedicated tastings, custom menus, and staffing that travels to your venue.</p>
-            <div className="pill-row">
-              <span className="pill">Staffed service</span>
-              <span className="pill alt">Buffet or plated</span>
+          <div className="forms-columns">
+            <div className="form-card">
+              <div className="form-card__head">
+                <h3>Reserve a Table</h3>
+                <span className="pill alt">Dine-in</span>
+              </div>
+              <p className="muted">
+                Hold a table for lunch or dinner. Share your time, party size, and any celebrations-our team will confirm.
+              </p>
+              <div className="pill-row">
+                <span className="pill alt">Lunch & Dinner</span>
+                <span className="pill">Groups up to 20</span>
+              </div>
+              <button type="button" className="btn primary" onClick={() => setIsReserveOpen(true)}>
+                Open reservation form
+              </button>
             </div>
-            <button className="btn secondary" onClick={() => setIsCateringOpen(true)}>
-              Open catering form
-            </button>
+
+            <div className="form-card">
+              <div className="form-card__head">
+                <h3>Catering Enquiry</h3>
+                <span className="pill">Events</span>
+              </div>
+              <p className="muted">
+                For weddings, corporate lunches, and celebrations. Tell us your guest count, date, and service style to begin.
+              </p>
+              <div className="pill-row">
+                <span className="pill">Staffed</span>
+                <span className="pill alt">Buffet or plated</span>
+              </div>
+              <button type="button" className="btn secondary" onClick={() => setIsCateringOpen(true)}>
+                Open catering form
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      <section
-        id="gallery"
-        className="panel with-bg"
-        style={{ ["--panel-bg" as string]: `url(${sectionBackgrounds.gallery})` }}
-      >
-        <div className="panel__content">
+      <section id="gallery" className="panel gallery-panel compact">
+        <div className="panel__content reveal reveal-up">
           <div className="section-header">
             <p className="eyebrow">Gallery</p>
             <h2>Inside Rajni</h2>
-            <p className="lede narrow">A peek into the red booths, mural art, fruit carving, and nighttime glow.</p>
+            <p className="lede narrow">Images glide in, side-by-side, just like a stroll past Longtable.</p>
           </div>
-          <div className="gallery-grid">
-            {galleryImages.map((image) => (
-              <div key={image.src} className="gallery-card">
-                <Image src={image.src} alt={image.alt} width={520} height={360} />
-                <span className="muted">{image.alt}</span>
+          <div className="gallery-window">
+            <button
+              className="gallery-arrow"
+              aria-label="Previous image"
+              onClick={() => setGalleryIndex((i) => (i - 1 + galleryImages.length) % galleryImages.length)}
+            >
+              &#8249;
+            </button>
+            <div className="gallery-main">
+              <Image
+                src={currentGalleryImage.src}
+                alt={currentGalleryImage.alt}
+                width={1200}
+                height={800}
+                sizes="(min-width: 900px) 70vw, 94vw"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                priority
+              />
+              <div className="gallery-caption">
+                <span className="muted">{currentGalleryImage.alt}</span>
               </div>
-            ))}
+            </div>
+            <button
+              className="gallery-arrow"
+              aria-label="Next image"
+              onClick={() => setGalleryIndex((i) => (i + 1) % galleryImages.length)}
+            >
+              &#8250;
+            </button>
           </div>
         </div>
       </section>
@@ -348,16 +370,16 @@ export default function HomePage() {
           aria-label="Reservation form"
           onClick={() => setIsReserveOpen(false)}
         >
-          <div className="modal__content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal__content" onClick={(e: { stopPropagation: () => any }) => e.stopPropagation()}>
             <div className="modal__header">
               <h3>Reserve a table</h3>
               <button className="icon-btn" onClick={() => setIsReserveOpen(false)} aria-label="Close reservation form">
-                ×
+                X
               </button>
             </div>
             <form
               className="form"
-              onSubmit={(e) => {
+              onSubmit={(e: { preventDefault: () => void }) => {
                 e.preventDefault();
                 alert("Reservation request sent! We'll reach out shortly.");
                 setIsReserveOpen(false);
@@ -409,16 +431,16 @@ export default function HomePage() {
           aria-label="Catering form"
           onClick={() => setIsCateringOpen(false)}
         >
-          <div className="modal__content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal__content" onClick={(e: { stopPropagation: () => any }) => e.stopPropagation()}>
             <div className="modal__header">
               <h3>Catering inquiry</h3>
               <button className="icon-btn" onClick={() => setIsCateringOpen(false)} aria-label="Close catering form">
-                ×
+                X
               </button>
             </div>
             <form
               className="form"
-              onSubmit={(e) => {
+              onSubmit={(e: { preventDefault: () => void }) => {
                 e.preventDefault();
                 alert("Catering request sent! We'll reach out shortly.");
                 setIsCateringOpen(false);
@@ -466,13 +488,13 @@ export default function HomePage() {
         .page {
           display: flex;
           flex-direction: column;
-          gap: 80px;
+          gap: 0;
           padding-top: 96px;
         }
 
         .hero {
           position: relative;
-          min-height: 80vh;
+          min-height: 82vh;
           display: grid;
           place-items: center;
           text-align: center;
@@ -488,7 +510,7 @@ export default function HomePage() {
         .hero__overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(180deg, rgba(250, 245, 237, 0.18), rgba(250, 245, 237, 0.82));
+          background: linear-gradient(180deg, rgba(245, 240, 234, 0.08), rgba(245, 240, 234, 0.82));
         }
 
         .hero__content {
@@ -498,27 +520,30 @@ export default function HomePage() {
         }
 
         h1 {
-          font-size: clamp(38px, 6vw, 64px);
-          letter-spacing: 0.02em;
+          font-family: var(--heading-font);
+          font-size: clamp(40px, 6vw, 62px);
+          letter-spacing: 0.01em;
           margin: 6px 0 16px;
           color: var(--cream);
         }
 
         h2 {
-          font-size: clamp(28px, 4vw, 44px);
+          font-family: var(--heading-font);
+          font-size: clamp(28px, 4vw, 40px);
           margin: 6px 0 16px;
           color: var(--cream);
         }
 
         h3 {
           margin: 0 0 10px;
-          font-size: clamp(20px, 2.2vw, 24px);
+          font-family: var(--heading-font);
+          font-size: clamp(19px, 2.2vw, 24px);
           color: var(--cream);
         }
 
         .eyebrow {
           text-transform: uppercase;
-          letter-spacing: 0.2em;
+          letter-spacing: 0.16em;
           font-size: 12px;
           color: var(--accent);
           margin: 0 0 8px;
@@ -527,7 +552,7 @@ export default function HomePage() {
 
         .lede {
           color: var(--muted);
-          font-size: 17px;
+          font-size: 16px;
           line-height: 1.7;
           margin: 0 auto 16px;
         }
@@ -560,15 +585,15 @@ export default function HomePage() {
         }
 
         .btn.primary {
-          background: linear-gradient(135deg, #f6c979, #f0a437);
-          color: #3b2109;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+          background: linear-gradient(135deg, #c48a2e, #9c5b2f);
+          color: #fff;
+          box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
         }
 
         .btn.secondary {
-          border-color: var(--gold);
+          border-color: var(--accent);
           color: var(--cream);
-          background: rgba(255, 255, 255, 0.7);
+          background: rgba(255, 255, 255, 0.82);
         }
 
         .btn:hover {
@@ -579,23 +604,26 @@ export default function HomePage() {
         .panel {
           display: flex;
           flex-direction: column;
-          gap: 30px;
+          gap: 20px;
+          margin: 0;
         }
 
         .with-bg {
           position: relative;
           isolation: isolate;
           overflow: hidden;
+          min-height: 60vh;
         }
 
         .with-bg::before {
           content: "";
           position: absolute;
           inset: 0;
-          background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.85)), var(--panel-bg);
+          background-image: var(--panel-bg);
           background-size: cover;
-          background-position: center;
-          background-attachment: fixed;
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-attachment: scroll;
           z-index: -2;
         }
 
@@ -603,24 +631,36 @@ export default function HomePage() {
           content: "";
           position: absolute;
           inset: 0;
-          background: rgba(255, 255, 255, 0.64);
-          backdrop-filter: blur(10px);
+          background: rgba(255, 255, 255, 0.08);
           z-index: -1;
         }
 
         .panel__content {
           position: relative;
-          padding: 60px 24px;
+          padding: 44px 20px 30px;
           display: flex;
           flex-direction: column;
-          gap: 30px;
+          gap: 20px;
+        }
+
+        .compact {
+          gap: 14px;
+        }
+
+        .compact .panel__content {
+          padding: 34px 18px 22px;
+          gap: 16px;
+        }
+
+        .compact.with-bg {
+          min-height: 48vh;
         }
 
         .with-bg .panel__content {
-          background: rgba(255, 255, 255, 0.82);
-          border-radius: 24px;
+          background: rgba(255, 255, 255, 0.56);
+          border-radius: 22px;
           border: 1px solid var(--border);
-          box-shadow: 0 18px 36px rgba(0, 0, 0, 0.06);
+          box-shadow: 0 16px 28px rgba(0, 0, 0, 0.05);
         }
 
         .panel.alt {
@@ -629,10 +669,21 @@ export default function HomePage() {
         }
 
         .panel.alt .panel__content {
-          background: rgba(255, 255, 255, 0.86);
+          background: rgba(255, 255, 255, 0.9);
           border-radius: 24px;
           border: 1px solid var(--border);
           box-shadow: 0 18px 36px rgba(0, 0, 0, 0.07);
+        }
+
+        .gallery-panel {
+          background: none;
+        }
+
+        .gallery-panel .panel__content {
+          background: rgba(255, 255, 255, 0.78);
+          border-radius: 20px;
+          border: 1px solid var(--border);
+          box-shadow: 0 20px 36px rgba(0, 0, 0, 0.08);
         }
 
         .section-header {
@@ -654,17 +705,17 @@ export default function HomePage() {
         .card {
           background: var(--panel);
           border: 1px solid var(--border);
-          border-radius: 18px;
-          padding: 20px;
+          border-radius: 16px;
+          padding: 18px;
           display: grid;
           gap: 10px;
           min-height: 180px;
-          box-shadow: 0 12px 26px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 12px 20px rgba(0, 0, 0, 0.06);
         }
 
         .card.focus {
-          background: linear-gradient(145deg, rgba(246, 201, 121, 0.08), rgba(255, 255, 255, 0.9));
-          border-color: rgba(194, 123, 22, 0.25);
+          background: linear-gradient(145deg, rgba(196, 138, 46, 0.08), rgba(255, 255, 255, 0.9));
+          border-color: rgba(196, 138, 46, 0.26);
         }
 
         .card p {
@@ -688,7 +739,7 @@ export default function HomePage() {
         .split__content {
           display: grid;
           gap: 14px;
-          max-width: 560px;
+          max-width: 620px;
         }
 
         .list {
@@ -703,13 +754,24 @@ export default function HomePage() {
           justify-content: center;
         }
 
-        .media-card {
-          width: min(420px, 100%);
-          background: #fff8ee;
+        .media-card,
+        .media-frame {
+          width: min(440px, 100%);
+          border-radius: 22px;
+          overflow: hidden;
+          position: relative;
           border: 1px solid var(--border);
-          border-radius: 20px;
-          padding: 20px;
           box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+          min-height: 320px;
+        }
+
+        .story-card {
+          background: rgba(255, 255, 255, 0.9);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 14px 16px;
+          box-shadow: 0 12px 22px rgba(0, 0, 0, 0.08);
+          transform: translateY(-4px);
         }
 
         .media-card ul {
@@ -745,26 +807,6 @@ export default function HomePage() {
           color: #3b2109;
           border-color: transparent;
           box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
-        }
-
-        .contact-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-          gap: 16px;
-        }
-
-        .contact-card {
-          display: grid;
-          gap: 6px;
-          background: var(--panel);
-          padding: 18px;
-          border-radius: 16px;
-          text-decoration: none;
-          border: 1px solid var(--border);
-        }
-
-        .contact-card:hover {
-          border-color: rgba(194, 123, 22, 0.3);
         }
 
         .location-tabs {
@@ -843,23 +885,109 @@ export default function HomePage() {
           grid-column: 1 / -1;
         }
 
-        .gallery-grid {
+        .forms-columns {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-          gap: 12px;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 16px;
+          align-items: stretch;
         }
 
-        .gallery-card {
-          background: #fff;
+        .form-card {
+          background: rgba(255, 255, 255, 0.94);
           border: 1px solid var(--border);
-          border-radius: 14px;
-          overflow: hidden;
-          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+          border-radius: 18px;
+          padding: 16px;
+          display: grid;
+          gap: 12px;
+          box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
         }
 
-        .gallery-card span {
-          display: block;
-          padding: 10px 12px 12px;
+        .form-card__head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .gallery-window {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          align-items: center;
+          gap: 12px;
+          max-width: 1060px;
+          margin: 0 auto;
+        }
+
+        .gallery-main {
+          position: relative;
+          width: 100%;
+          min-height: 380px;
+          border-radius: 16px;
+          overflow: hidden;
+          border: 1px solid var(--border);
+          box-shadow: 0 18px 36px rgba(0, 0, 0, 0.12);
+          background: #fff;
+          display: grid;
+          place-items: center;
+        }
+
+        .gallery-caption {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          padding: 10px 14px 12px;
+          background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.38));
+          color: #fff;
+          font-weight: 600;
+          letter-spacing: 0.01em;
+        }
+
+        .gallery-arrow {
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          border: 1px solid var(--border);
+          background: rgba(255, 255, 255, 0.85);
+          font-size: 20px;
+          color: var(--cream);
+          display: grid;
+          place-items: center;
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .gallery-arrow:hover {
+          border-color: var(--gold);
+        }
+
+        .reveal {
+          opacity: 0;
+          transform: translateY(26px);
+          transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+
+        .reveal.reveal-left {
+          transform: translateX(-26px);
+        }
+
+        .reveal.reveal-up {
+          transform: translateY(26px);
+        }
+
+        .reveal.in-view {
+          opacity: 1;
+          transform: translate(0, 0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .reveal {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+
+          .gallery-rail {
+            transition: none;
+          }
         }
 
         .modal {
@@ -899,13 +1027,13 @@ export default function HomePage() {
           border-radius: 12px;
           width: 40px;
           height: 40px;
-          font-size: 24px;
+          font-size: 18px;
           color: var(--cream);
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 980px) {
           .page {
-            gap: 60px;
+            gap: 0;
             padding-top: 82px;
           }
 
@@ -928,6 +1056,10 @@ export default function HomePage() {
 
           .card-grid {
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          }
+
+          .gallery-slide {
+            flex-basis: 88%;
           }
         }
       `}</style>

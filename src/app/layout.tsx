@@ -1,6 +1,7 @@
 import "../styles/theme.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { LocationProvider } from "../context/LocationContext";
 
 export const metadata = {
   title: "Rajni Indian Cuisine",
@@ -11,9 +12,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <LocationProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </LocationProvider>
       </body>
     </html>
   );

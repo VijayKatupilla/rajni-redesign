@@ -1,12 +1,14 @@
 :root {
-  --bg: #f7f1e6;
-  --panel: rgba(255, 255, 255, 0.74);
-  --gold: #d2a04b;
-  --cream: #2d2216;
-  --text: #2c1f12;
-  --muted: #5b4833;
-  --accent: #b54f2c;
-  --border: rgba(56, 36, 18, 0.16);
+  --bg: #f5f0ea;
+  --panel: #ffffff;
+  --gold: #c48a2e;
+  --cream: #1f1207;
+  --text: #2a1b0f;
+  --muted: #6a5540;
+  --accent: #7a2f1b;
+  --border: rgba(46, 25, 11, 0.14);
+  --heading-font: "Georgia", "Times New Roman", serif;
+  --body-font: "Inter", "Helvetica Neue", system-ui, -apple-system, sans-serif;
 }
 
 * {
@@ -15,9 +17,11 @@
 
 body {
   margin: 0;
-  font-family: "Inter", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  font-family: var(--body-font);
   background: var(--bg);
   color: var(--text);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
 }
 
 a {
