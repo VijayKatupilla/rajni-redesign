@@ -6,6 +6,8 @@ import { locations, useLocation } from "../context/LocationContext";
 export default function Footer() {
   const { selectedIndex, setSelectedIndex } = useLocation();
   const active = locations[selectedIndex];
+  const phoneHref = active.phone.replace(/[^\d]/g, "");
+  const activeEmail = active.email || "info@rajnimadison.com";
 
   return (
     <footer className="footer">
@@ -33,11 +35,12 @@ export default function Footer() {
                 {locations.map((loc, idx) => (
                   <a
                     key={loc.name}
-                    href={loc.map}
-                    target="_blank"
-                    rel="noreferrer"
+                    href="#locations"
                     className={idx === selectedIndex ? "active" : ""}
-                    onClick={() => setSelectedIndex(idx)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSelectedIndex(idx);
+                    }}
                   >
                     {loc.name}
                   </a>
@@ -63,20 +66,21 @@ export default function Footer() {
         <div className="footer__group">
           <h3>Contact & Links</h3>
           <p>
-            <a href="tel:+16081234567">(608) 123-4567</a>
-            <br /> <a href="mailto:info@rajnimadison.com">info@rajnimadison.com</a>
+            <a href={`tel:${phoneHref}`}>{active.phone}</a>
+            <br /> <a href={`mailto:${activeEmail}`}>{activeEmail}</a>
           </p>
           <div className="footer__links">
             <a href="#reserve">Reserve</a>
             <a href="#contact">Catering</a>
-            <a
-              className="cta"
-              href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Order Online -{">"}
-            </a>
+            {active.order ? (
+              <a className="cta" href={active.order} target="_blank" rel="noreferrer">
+                Order Online -{">"}
+              </a>
+            ) : (
+              <a className="cta" href={`tel:${phoneHref}`}>
+                Call to Order -{">"}
+              </a>
+            )}
           </div>
         </div>
       </div>

@@ -224,7 +224,7 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-          <div className="split__media">
+          <div className="split__media reveal reveal-right">
             <div className="media-frame">
               <Image
                 src="/images/gallery-8.jpg"
@@ -244,21 +244,46 @@ export default function HomePage() {
         style={{ ["--panel-bg" as string]: `url(${heroBackground})` }}
       >
         <div className="panel__content reveal reveal-up">
-          <div className="section-header">
-            <p className="eyebrow">Experience</p>
-            <h2>Designed for gatherings</h2>
-            <p className="lede narrow">
-              House curries, tandoor platters, and playlists tuned to feel like Rajni energy - wrapping your night in warm
-              hospitality.
-            </p>
-          </div>
-          <div className="card-grid">
-            {experience.map((item) => (
-              <div key={item.title} className="card focus">
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
+          <div className="experience-layout">
+            <div className="experience-intro reveal reveal-left">
+              <p className="eyebrow">Experience</p>
+              <h2>Designed for gatherings</h2>
+              <p className="lede narrow">
+                House curries, tandoor platters, and playlists tuned to feel like Rajni energy - wrapping your night in warm
+                hospitality.
+              </p>
+              <div className="experience-media-grid">
+                <div className="experience-media reveal reveal-right">
+                  <Image
+                    src="/images/gallery-2.jpg"
+                    alt="Rajni mural art"
+                    fill
+                    sizes="(min-width: 980px) 32vw, 88vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+                <div className="experience-media reveal reveal-right">
+                  <Image
+                    src="/images/gallery-1.jpg"
+                    alt="Rajni dining room with red booths"
+                    fill
+                    sizes="(min-width: 980px) 32vw, 88vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
               </div>
-            ))}
+            </div>
+            <div className="card-stack">
+              {experience.map((item, idx) => (
+                <div
+                  key={item.title}
+                  className={`card focus reveal ${idx % 2 === 0 ? "reveal-left" : "reveal-right"}`}
+                >
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -278,7 +303,7 @@ export default function HomePage() {
           </div>
           <div className="card-grid">
             {specials.map((item) => (
-              <div key={item.title} className="card">
+              <div key={item.title} className="card reveal reveal-up">
                 <div className="pill-row">
                   <span className="pill alt">{item.tag}</span>
                 </div>
@@ -298,7 +323,7 @@ export default function HomePage() {
             <p className="lede narrow">Two quick options-tap to open the full form for each.</p>
           </div>
           <div className="forms-columns">
-            <div className="form-card">
+            <div className="form-card reveal reveal-up">
               <div className="form-card__head">
                 <h3>Reserve a Table</h3>
                 <span className="pill alt">Dine-in</span>
@@ -315,7 +340,7 @@ export default function HomePage() {
               </button>
             </div>
 
-            <div className="form-card">
+            <div className="form-card reveal reveal-up">
               <div className="form-card__head">
                 <h3>Catering Enquiry</h3>
                 <span className="pill">Events</span>
@@ -719,6 +744,40 @@ export default function HomePage() {
           margin: 0 auto;
         }
 
+        .experience-layout {
+          display: grid;
+          grid-template-columns: minmax(260px, 0.9fr) minmax(320px, 1.1fr);
+          gap: 22px;
+          align-items: start;
+        }
+
+        .experience-intro {
+          text-align: left;
+          max-width: 520px;
+          }
+
+        .experience-media-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 12px;
+          margin-top: 12px;
+        }
+
+        .experience-media {
+          position: relative;
+          width: 100%;
+          min-height: 240px;
+          border-radius: 18px;
+          overflow: hidden;
+          border: 1px solid var(--border);
+          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-stack {
+          display: grid;
+          gap: 14px;
+        }
+
         .card-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -1019,6 +1078,10 @@ export default function HomePage() {
           transform: translateX(-26px);
         }
 
+        .reveal.reveal-right {
+          transform: translateX(26px);
+        }
+
         .reveal.reveal-up {
           transform: translateY(26px);
         }
@@ -1102,6 +1165,23 @@ export default function HomePage() {
           .panel,
           .panel.alt {
             padding-inline: 18px;
+          }
+
+          .experience-layout {
+            grid-template-columns: 1fr;
+          }
+
+          .experience-intro {
+            text-align: center;
+            margin: 0 auto;
+          }
+
+          .experience-media-grid {
+            margin-top: 10px;
+          }
+
+          .experience-media {
+            min-height: 220px;
           }
 
           .card-grid {

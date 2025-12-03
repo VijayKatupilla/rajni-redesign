@@ -9,6 +9,7 @@ export type Location = {
   phone: string;
   map: string;
   order?: string;
+  email?: string;
   hours: string[];
 };
 
@@ -20,6 +21,7 @@ export const locations: Location[] = [
     phone: "(608) 123-4567",
     map: "https://www.google.com/maps/place/Rajni+Indian+Cuisine,+429+Commerce+Dr,+Madison,+WI+53719",
     order: "https://order.toasttab.com/online/rajni-madison-429-commerce-drive",
+    email: "info@rajnimadison.com",
     hours: [
       "Mon-Thu: 11:00 AM - 2:30 PM / 5:00 PM - 9:00 PM",
       "Fri-Sat: 11:00 AM - 2:30 PM / 5:00 PM - 10:00 PM",
@@ -33,6 +35,7 @@ export const locations: Location[] = [
     phone: "(470) 555-1212",
     map: "https://www.google.com/maps/search/?api=1&query=Rajni+Indian+Cuisine+Atlanta+GA",
     order: "",
+    email: "info@rajninatlanta.com",
     hours: [
       "Mon-Thu: 11:00 AM - 2:30 PM / 5:00 PM - 9:30 PM",
       "Fri-Sat: 11:00 AM - 2:30 PM / 5:00 PM - 10:30 PM",
@@ -46,6 +49,7 @@ export const locations: Location[] = [
     phone: "(973) 555-2020",
     map: "https://www.google.com/maps/search/?api=1&query=Rajni+Indian+Cuisine+Parsippany+NJ",
     order: "",
+    email: "info@rajniparsippany.com",
     hours: [
       "Mon-Thu: 11:00 AM - 2:30 PM / 5:00 PM - 9:00 PM",
       "Fri-Sat: 11:00 AM - 2:30 PM / 5:00 PM - 10:00 PM",
