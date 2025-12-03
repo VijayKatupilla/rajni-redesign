@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Chrome, Facebook, Instagram } from "lucide-react";
 import { locations, useLocation } from "../context/LocationContext";
 
 export default function Footer() {
@@ -69,6 +70,22 @@ export default function Footer() {
             <a href={`tel:${phoneHref}`}>{active.phone}</a>
             <br /> <a href={`mailto:${activeEmail}`}>{activeEmail}</a>
           </p>
+          <div className="footer__socials">
+            <a href="https://www.facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+              <Facebook size={18} />
+            </a>
+            <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <Instagram size={18} />
+            </a>
+            <a
+              href="https://www.google.com/search?q=rajni+indian+cuisine&rlz=1C1GCEA_enUS1098US1098&oq=rajni+indian+cuisine+&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg7MhIIAhAuGCcYrwEYxwEYgAQYigUyBwgDEAAYgAQyDQgEEC4YrwEYxwEYgAQyDQgFEC4YrwEYxwEYgAQyBggGEEUYPDIGCAcQRRg90gEINTYyOWowajeoAgCwAgA&sourceid=chrome&ie=UTF-8&zx=1764727739037&no_sw_cr=1"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Google"
+            >
+              <Chrome size={18} />
+            </a>
+          </div>
           <div className="footer__links">
             <a href="#reserve">Reserve</a>
             <a href="#contact">Catering</a>
@@ -157,6 +174,28 @@ export default function Footer() {
         .footer__links a.cta {
           color: var(--accent);
           font-weight: 700;
+        }
+
+        .footer__socials {
+          display: flex;
+          gap: 10px;
+          margin: 6px 0 10px;
+        }
+
+        .footer__socials a {
+          width: 34px;
+          height: 34px;
+          border-radius: 10px;
+          display: grid;
+          place-items: center;
+          border: 1px solid var(--border);
+          background: rgba(255, 255, 255, 0.8);
+          color: var(--muted);
+        }
+
+        .footer__socials a:hover {
+          color: var(--cream);
+          border-color: var(--gold);
         }
 
         .footer__locations {
