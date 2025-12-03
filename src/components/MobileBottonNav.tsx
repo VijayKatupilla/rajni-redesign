@@ -1,7 +1,6 @@
 "use client";
 
 const links = [
-  { label: "Home", href: "#home" },
   { label: "Order", href: "https://order.toasttab.com/online/rajni-madison-429-commerce-drive", external: true },
   { label: "Reserve", href: "#reserve" },
   { label: "Specials", href: "#specials" },
@@ -18,7 +17,7 @@ export default function MobileBottomNav() {
             href={link.href}
             target={link.external ? "_blank" : undefined}
             rel={link.external ? "noreferrer" : undefined}
-            className={`mobile-nav__link ${link.label === "Order" ? "order" : ""}`}
+            className="mobile-nav__link"
           >
             {link.label}
           </a>
@@ -31,18 +30,17 @@ export default function MobileBottomNav() {
           bottom: 0;
           left: 0;
           right: 0;
-          padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
-          background: rgba(13, 8, 4, 0.82);
-          backdrop-filter: blur(12px);
-          color: #fff;
+          padding: 9px 12px calc(10px + env(safe-area-inset-bottom));
+          background: #ffffff;
+          color: var(--cream);
           z-index: 130;
-          border-top: 1px solid rgba(255, 255, 255, 0.12);
-          box-shadow: 0 -10px 24px rgba(0, 0, 0, 0.16);
+          border-top: 1px solid var(--border);
+          box-shadow: 0 -10px 22px rgba(0, 0, 0, 0.08);
         }
 
         .mobile-nav__links {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
           gap: 8px;
           align-items: stretch;
         }
@@ -51,23 +49,16 @@ export default function MobileBottomNav() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 11px 12px;
-          border-radius: 12px;
-          border: 1px solid rgba(255, 255, 255, 0.16);
-          background: rgba(255, 255, 255, 0.08);
-          color: #f9efe3;
+          padding: 9px 10px;
+          border-radius: 10px;
+          border: 1px solid var(--border);
+          background: #f9f5ef;
+          color: var(--cream);
           font-weight: 700;
           letter-spacing: 0.02em;
           text-decoration: none;
           text-transform: uppercase;
-          font-size: 12px;
-        }
-
-        .mobile-nav__link.order {
-          background: linear-gradient(135deg, #f6c979, #f0a437);
-          color: #3b2109;
-          border-color: transparent;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+          font-size: 11px;
         }
 
         .mobile-nav__link:active {
