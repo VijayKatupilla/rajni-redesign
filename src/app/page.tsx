@@ -9,7 +9,7 @@ const heroBackground = "/images/gallery-3.jpg";
 
 const aboutPoints = [
   "Small-batch curries, hand-ground spices, and recipes passed through our family.",
-  "A dining room layered with red lounge seating, art, and the Longtable sense of welcome.",
+  "A dining room layered with red lounge seating, art, and the sense of welcome.",
   "Cocktails and lassis designed to cool, brighten, and celebrate every visit.",
 ];
 
@@ -25,21 +25,6 @@ const experience = [
   {
     title: "Atmosphere",
     description: "Red booths, soft light, and playlists tuned for nights that linger.",
-  },
-];
-
-const happenings = [
-  {
-    title: "Private Dining",
-    text: "Intimate rooms for celebrations, corporate dinners, or meetups.",
-  },
-  {
-    title: "Chef Tables",
-    text: "Regional menus, tasting flights, and hosted experiences inspired by Longtable.",
-  },
-  {
-    title: "Community Nights",
-    text: "Bollywood brunches, spice workshops, and pairing events.",
   },
 ];
 
@@ -173,8 +158,7 @@ export default function HomePage() {
           <div className="eyebrow">Modern Indian Dining</div>
           <h1>Rajni Indian Cuisine</h1>
           <p className="lede">
-            A celebratory dining room inspired by Longtable - red lounge seating, handcrafted spices, and cocktails built for
-            toasting every win.
+            A celebratory dining room with red lounge seating, handcrafted spices, and cocktails built for toasting every win.
           </p>
           <div className="location-tabs">
             {locations.map((loc, index) => (
@@ -227,7 +211,7 @@ export default function HomePage() {
             <div className="story-card">
               <h3>Our Story</h3>
               <p className="muted">
-                Rajni is where family recipes meet the Longtable spirit. We cook slow, welcome warmly, and celebrate often.
+                Rajni is where family recipes meet a modern dining spirit. We cook slow, welcome warmly, and celebrate often.
               </p>
             </div>
             <p className="lede narrow">
@@ -264,7 +248,7 @@ export default function HomePage() {
             <p className="eyebrow">Experience</p>
             <h2>Designed for gatherings</h2>
             <p className="lede narrow">
-              House curries, tandoor platters, and playlists tuned to feel like Longtable energy - Rajni wraps your night in warm
+              House curries, tandoor platters, and playlists tuned to feel like Rajni energy - wrapping your night in warm
               hospitality.
             </p>
           </div>
@@ -273,31 +257,6 @@ export default function HomePage() {
               <div key={item.title} className="card focus">
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="events"
-        className="panel with-bg compact"
-        style={{ ["--panel-bg" as string]: `url(${heroBackground})` }}
-      >
-        <div className="panel__content reveal reveal-up">
-          <div className="section-header">
-            <p className="eyebrow">Events</p>
-            <h2>Happenings & gatherings</h2>
-            <p className="lede narrow">
-              From chef tables to corporate dinners, Rajni layers every detail - lighting, spice, and music - for nights that
-              linger.
-            </p>
-          </div>
-          <div className="card-grid thirds">
-            {happenings.map((item) => (
-              <div key={item.title} className="card">
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
               </div>
             ))}
           </div>
@@ -314,7 +273,7 @@ export default function HomePage() {
             <p className="eyebrow">Weekend & Daily Specials</p>
             <h2>Seasonal plates that keep changing</h2>
             <p className="lede narrow">
-              Just like Longtable, the board shifts weekly - weekend chef features, speedy lunches, and shareable curry duos.
+              The board shifts weekly - weekend chef features, speedy lunches, and shareable curry duos.
             </p>
           </div>
           <div className="card-grid">
@@ -381,7 +340,7 @@ export default function HomePage() {
           <div className="section-header">
             <p className="eyebrow">Gallery</p>
             <h2>Inside Rajni</h2>
-            <p className="lede narrow">Images glide in, side-by-side, just like a stroll past Longtable.</p>
+            <p className="lede narrow">Images glide in, side-by-side, just like a stroll through the dining room.</p>
           </div>
           <div className="gallery-window">
             <button

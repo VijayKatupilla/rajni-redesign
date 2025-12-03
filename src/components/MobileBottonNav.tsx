@@ -6,7 +6,7 @@ const links = [
   { label: "Order", href: "https://order.toasttab.com/online/rajni-madison-429-commerce-drive", external: true },
   { label: "Reserve", href: "#reserve" },
   { label: "Specials", href: "#specials" },
-  { label: "Events", href: "#events" },
+  { label: "Gallery", href: "#gallery" },
 ];
 
 export default function MobileBottomNav() {

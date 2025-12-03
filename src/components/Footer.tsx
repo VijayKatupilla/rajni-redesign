@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="footer__brand">
           <Image src="/images/logo1.png" alt="Rajni logo" width={180} height={64} />
           <p>Rajni Indian Cuisine</p>
-          <span>Red booths, warm spices, and Longtable-inspired hospitality.</span>
+          <span>Red booths, warm spices, and welcoming hospitality.</span>
         </div>
 
         <div className="footer__group">
