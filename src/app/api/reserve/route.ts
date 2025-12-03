@@ -11,7 +11,7 @@ type ReservePayload = {
   notes?: string;
 };
 
-const managerEmail = process.env.MANAGER_EMAIL || "Rajni.Madison@gmail.com";
+const managerEmail = process.env.MANAGER_EMAIL || "vijaykatupilla7@gmail.com";
 
 function buildReference() {
   return `RJ-${Date.now().toString(36).toUpperCase()}-${Math.floor(Math.random() * 1000)
