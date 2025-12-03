@@ -117,7 +117,9 @@ export default function HomePage() {
       if (!res.ok) throw new Error(data?.error || "Something went wrong");
 
       setReserveStatus({ state: "success", message: data?.message, ref: data?.reference });
-      form.reset();
+      if (typeof form?.reset === "function") {
+        form.reset();
+      }
     } catch (error: any) {
       setReserveStatus({ state: "error", message: error?.message || "Failed to submit reservation" });
     }
@@ -143,7 +145,9 @@ export default function HomePage() {
       if (!res.ok) throw new Error(data?.error || "Something went wrong");
 
       setCateringStatus({ state: "success", message: data?.message, ref: data?.reference });
-      form.reset();
+      if (typeof form?.reset === "function") {
+        form.reset();
+      }
     } catch (error: any) {
       setCateringStatus({ state: "error", message: error?.message || "Failed to submit catering request" });
     }
