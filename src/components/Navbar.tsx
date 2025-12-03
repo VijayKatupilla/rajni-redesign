@@ -26,6 +26,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(new CustomEvent("mobileMenuToggle", { detail: { open: menuOpen } }));
+  }, [menuOpen]);
+
   return (
     <>
       <nav className="navbar">

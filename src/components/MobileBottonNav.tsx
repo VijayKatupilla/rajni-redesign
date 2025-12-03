@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 const links = [
   { label: "Order", href: "https://order.toasttab.com/online/rajni-madison-429-commerce-drive", external: true },
   { label: "Reserve", href: "#reserve" },
@@ -8,8 +10,41 @@ const links = [
 ];
 
 export default function MobileBottomNav() {
+  const [hideForHome, setHideForHome] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const home = document.getElementById("home");
+    if (!home) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setHideForHome(!!entry?.isIntersecting);
+      },
+      { threshold: 0.45 }
+    );
+
+    observer.observe(home);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleToggle = (event: Event) => {
+      const detail = (event as CustomEvent<{ open?: boolean }>).detail;
+      if (typeof detail?.open === "boolean") {
+        setMenuOpen(detail.open);
+      }
+    };
+
+    window.addEventListener("mobileMenuToggle", handleToggle as EventListener);
+    return () => window.removeEventListener("mobileMenuToggle", handleToggle as EventListener);
+  }, []);
+
+  const hidden = hideForHome || menuOpen;
+
   return (
-    <nav className="mobile-nav" aria-label="Quick mobile navigation">
+    <nav className={`mobile-nav ${hidden ? "hidden" : ""}`} aria-label="Quick mobile navigation">
       <div className="mobile-nav__links">
         {links.map((link) => (
           <a
@@ -36,6 +71,7 @@ export default function MobileBottomNav() {
           z-index: 130;
           border-top: 1px solid var(--border);
           box-shadow: 0 -10px 22px rgba(0, 0, 0, 0.08);
+          transition: opacity 0.22s ease, transform 0.22s ease;
         }
 
         .mobile-nav__links {
@@ -63,6 +99,12 @@ export default function MobileBottomNav() {
 
         .mobile-nav__link:active {
           transform: translateY(1px);
+        }
+
+        .mobile-nav.hidden {
+          opacity: 0;
+          pointer-events: none;
+          transform: translateY(10px);
         }
 
         @media (min-width: 981px) {

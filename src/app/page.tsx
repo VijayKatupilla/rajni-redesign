@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import GoogleReviews from "../components/GoogleReviews";
 import { locations, useLocation } from "../context/LocationContext";
 
@@ -78,6 +78,12 @@ export default function HomePage() {
   const [isReserveOpen, setIsReserveOpen] = useState(false);
   const [isCateringOpen, setIsCateringOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [reserveStatus, setReserveStatus] = useState<{ state: "idle" | "loading" | "success" | "error"; message?: string; ref?: string }>({
+    state: "idle",
+  });
+  const [cateringStatus, setCateringStatus] = useState<{ state: "idle" | "loading" | "success" | "error"; message?: string; ref?: string }>({
+    state: "idle",
+  });
 
   const activeLocation = useMemo(() => locations[selectedIndex], [selectedIndex]);
   const phoneHref = activeLocation.phone.replace(/[^\d]/g, "");
@@ -105,6 +111,56 @@ export default function HomePage() {
     const timer = setInterval(() => setGalleryIndex((i) => (i + 1) % galleryImages.length), 3600);
     return () => clearInterval(timer);
   }, []);
+
+  const handleReserveSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (reserveStatus.state === "loading") return;
+
+    const formData = new FormData(e.currentTarget);
+    const payload = Object.fromEntries(formData.entries());
+
+    setReserveStatus({ state: "loading" });
+    try {
+      const res = await fetch("/api/reserve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "Something went wrong");
+
+      setReserveStatus({ state: "success", message: data?.message, ref: data?.reference });
+      e.currentTarget.reset();
+    } catch (error: any) {
+      setReserveStatus({ state: "error", message: error?.message || "Failed to submit reservation" });
+    }
+  };
+
+  const handleCateringSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (cateringStatus.state === "loading") return;
+
+    const formData = new FormData(e.currentTarget);
+    const payload = Object.fromEntries(formData.entries());
+
+    setCateringStatus({ state: "loading" });
+    try {
+      const res = await fetch("/api/catering", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "Something went wrong");
+
+      setCateringStatus({ state: "success", message: data?.message, ref: data?.reference });
+      e.currentTarget.reset();
+    } catch (error: any) {
+      setCateringStatus({ state: "error", message: error?.message || "Failed to submit catering request" });
+    }
+  };
 
   return (
     <div className="page">
@@ -379,11 +435,7 @@ export default function HomePage() {
             </div>
             <form
               className="form"
-              onSubmit={(e: { preventDefault: () => void }) => {
-                e.preventDefault();
-                alert("Reservation request sent! We'll reach out shortly.");
-                setIsReserveOpen(false);
-              }}
+              onSubmit={handleReserveSubmit}
             >
               <div className="form-grid">
                 <label>
@@ -410,13 +462,23 @@ export default function HomePage() {
                   Time
                   <input type="time" name="time" required />
                 </label>
-                <label className="full">
-                  Notes
-                  <textarea name="notes" rows={3} placeholder="Allergies, celebrations, or seating requests" />
-                </label>
+              <label className="full">
+                Notes
+                <textarea name="notes" rows={3} placeholder="Allergies, celebrations, or seating requests" />
+              </label>
               </div>
-              <button type="submit" className="btn primary">
-                Submit Reservation
+              <div className="status-row">
+                {reserveStatus.state === "success" && (
+                  <span className="status success">
+                    {reserveStatus.message || "Reservation received."} Ref: {reserveStatus.ref}
+                  </span>
+                )}
+                {reserveStatus.state === "error" && (
+                  <span className="status error">{reserveStatus.message || "Unable to send right now."}</span>
+                )}
+              </div>
+              <button type="submit" className="btn primary" disabled={reserveStatus.state === "loading"}>
+                {reserveStatus.state === "loading" ? "Sending..." : "Submit Reservation"}
               </button>
             </form>
           </div>
@@ -440,11 +502,7 @@ export default function HomePage() {
             </div>
             <form
               className="form"
-              onSubmit={(e: { preventDefault: () => void }) => {
-                e.preventDefault();
-                alert("Catering request sent! We'll reach out shortly.");
-                setIsCateringOpen(false);
-              }}
+              onSubmit={handleCateringSubmit}
             >
               <div className="form-grid">
                 <label>
@@ -476,8 +534,18 @@ export default function HomePage() {
                   <textarea name="notes" rows={3} placeholder="Service style, venue, cuisine preferences" />
                 </label>
               </div>
-              <button type="submit" className="btn primary">
-                Submit Catering Request
+              <div className="status-row">
+                {cateringStatus.state === "success" && (
+                  <span className="status success">
+                    {cateringStatus.message || "Catering request received."} Ref: {cateringStatus.ref}
+                  </span>
+                )}
+                {cateringStatus.state === "error" && (
+                  <span className="status error">{cateringStatus.message || "Unable to send right now."}</span>
+                )}
+              </div>
+              <button type="submit" className="btn primary" disabled={cateringStatus.state === "loading"}>
+                {cateringStatus.state === "loading" ? "Sending..." : "Submit Catering Request"}
               </button>
             </form>
           </div>
@@ -883,6 +951,29 @@ export default function HomePage() {
 
         label.full {
           grid-column: 1 / -1;
+        }
+
+        .status-row {
+          min-height: 20px;
+        }
+
+        .status {
+          display: inline-block;
+          font-weight: 700;
+          font-size: 13px;
+        }
+
+        .status.success {
+          color: #2f7a36;
+        }
+
+        .status.error {
+          color: #b22626;
+        }
+
+        .btn[disabled] {
+          opacity: 0.7;
+          cursor: not-allowed;
         }
 
         .forms-columns {
