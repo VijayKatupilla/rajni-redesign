@@ -58,14 +58,6 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="navbar__socials">
-          {socials.map(({ label, href, icon: Icon }) => (
-            <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}>
-              <Icon size={18} />
-            </a>
-          ))}
-        </div>
-
         <div className="navbar__actions">
           <a className="ghost" href="#reserve" aria-label="Reserve a table">
             Reserve
@@ -80,9 +72,18 @@ export default function Navbar() {
           </a>
         </div>
 
-        <button className="navbar__mobile-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
-          <span aria-hidden="true">&#9776;</span>
-        </button>
+        <div className="navbar__mobile-right">
+          <div className="navbar__socials">
+            {socials.map(({ label, href, icon: Icon }) => (
+              <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}>
+                <Icon size={18} />
+              </a>
+            ))}
+          </div>
+          <button className="navbar__mobile-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+            <span aria-hidden="true">&#9776;</span>
+          </button>
+        </div>
       </nav>
 
       {menuOpen && <div className="backdrop" onClick={() => setMenuOpen(false)} />}
@@ -179,6 +180,10 @@ export default function Navbar() {
         }
 
         .navbar__socials {
+          display: none;
+        }
+
+        .navbar__mobile-right {
           display: none;
         }
 
@@ -320,11 +325,17 @@ export default function Navbar() {
             display: none;
           }
 
-          .navbar__socials {
+          .navbar__mobile-right {
             display: inline-flex;
             align-items: center;
             gap: 10px;
             justify-self: end;
+          }
+
+          .navbar__socials {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
           }
 
           .navbar__socials a {
