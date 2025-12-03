@@ -38,3 +38,9 @@ main {
     radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.82), transparent 30%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.95) 55%, #fff 100%);
 }
+
+@media (max-width: 980px) {
+  main {
+    padding-bottom: 98px;
+  }
+}
