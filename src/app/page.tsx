@@ -101,7 +101,8 @@ export default function HomePage() {
     e.preventDefault();
     if (reserveStatus.state === "loading") return;
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
 
     setReserveStatus({ state: "loading" });
@@ -116,7 +117,7 @@ export default function HomePage() {
       if (!res.ok) throw new Error(data?.error || "Something went wrong");
 
       setReserveStatus({ state: "success", message: data?.message, ref: data?.reference });
-      e.currentTarget.reset();
+      form.reset();
     } catch (error: any) {
       setReserveStatus({ state: "error", message: error?.message || "Failed to submit reservation" });
     }
@@ -126,7 +127,8 @@ export default function HomePage() {
     e.preventDefault();
     if (cateringStatus.state === "loading") return;
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
 
     setCateringStatus({ state: "loading" });
@@ -141,7 +143,7 @@ export default function HomePage() {
       if (!res.ok) throw new Error(data?.error || "Something went wrong");
 
       setCateringStatus({ state: "success", message: data?.message, ref: data?.reference });
-      e.currentTarget.reset();
+      form.reset();
     } catch (error: any) {
       setCateringStatus({ state: "error", message: error?.message || "Failed to submit catering request" });
     }
