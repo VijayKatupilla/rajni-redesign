@@ -3,18 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Chrome, Facebook, Instagram } from "lucide-react";
 
 const sections = ["home", "about", "experience", "specials", "reserve", "gallery", "reviews"];
-const socials = [
-  { label: "Facebook", href: "https://www.facebook.com", icon: Facebook },
-  { label: "Instagram", href: "https://www.instagram.com", icon: Instagram },
-  {
-    label: "Google",
-    href: "https://www.google.com/search?q=rajni+indian+cuisine&rlz=1C1GCEA_enUS1098US1098&oq=rajni+indian+cuisine+&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg7MhIIAhAuGCcYrwEYxwEYgAQYigUyBwgDEAAYgAQyDQgEEC4YrwEYxwEYgAQyDQgFEC4YrwEYxwEYgAQyBggGEEUYPDIGCAcQRRg90gEINTYyOWowajeoAgCwAgA&sourceid=chrome&ie=UTF-8&zx=1764727739037&no_sw_cr=1",
-    icon: Chrome,
-  },
-];
 
 export default function Navbar() {
   const [active, setActive] = useState("home");
@@ -73,13 +63,6 @@ export default function Navbar() {
         </div>
 
         <div className="navbar__mobile-right">
-          <div className="navbar__socials">
-            {socials.map(({ label, href, icon: Icon }) => (
-              <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}>
-                <Icon size={18} />
-              </a>
-            ))}
-          </div>
           <button className="navbar__mobile-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
             <span aria-hidden="true">&#9776;</span>
           </button>
@@ -99,14 +82,6 @@ export default function Navbar() {
           {sections.map((section) => (
             <a key={section} href={`#${section}`} onClick={() => setMenuOpen(false)}>
               {section.charAt(0).toUpperCase() + section.slice(1)}
-            </a>
-          ))}
-        </div>
-        <div className="drawer-socials">
-          {socials.map(({ label, href, icon: Icon }) => (
-            <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}>
-              <Icon size={18} />
-              <span>{label}</span>
             </a>
           ))}
         </div>
@@ -177,10 +152,6 @@ export default function Navbar() {
           display: flex;
           justify-content: flex-end;
           gap: 10px;
-        }
-
-        .navbar__socials {
-          display: none;
         }
 
         .navbar__mobile-right {
@@ -291,29 +262,6 @@ export default function Navbar() {
           gap: 10px;
         }
 
-        .drawer-socials {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 12px 0 4px;
-          border-top: 1px solid var(--border);
-          border-bottom: 1px solid var(--border);
-          margin-bottom: 12px;
-        }
-
-        .drawer-socials a {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          color: var(--muted);
-          text-decoration: none;
-          font-weight: 600;
-        }
-
-        .drawer-socials a:hover {
-          color: var(--text);
-        }
-
         @media (max-width: 980px) {
           .navbar {
             grid-template-columns: 1fr auto;
@@ -330,28 +278,6 @@ export default function Navbar() {
             align-items: center;
             gap: 10px;
             justify-self: end;
-          }
-
-          .navbar__socials {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-          }
-
-          .navbar__socials a {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            display: grid;
-            place-items: center;
-            color: var(--muted);
-            background: rgba(255, 255, 255, 0.7);
-          }
-
-          .navbar__socials a:hover {
-            color: var(--cream);
-            border-color: var(--gold);
           }
 
           .navbar__mobile-toggle {
