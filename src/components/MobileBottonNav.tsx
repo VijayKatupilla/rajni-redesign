@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const links = [
   { label: "About", href: "#about" },
   { label: "Menu", href: "#menu" },
-  { label: "Spls", href: "#specials" },
+  { label: "Specials", href: "#specials" },
   { label: "Catering", href: "#catering" },
   { label: "Order", href: "#order" },
 ];
@@ -93,7 +93,7 @@ export default function MobileBottomNav() {
           letter-spacing: 0;
           text-decoration: none;
           text-transform: uppercase;
-          font-size: 9px;
+          font-size: 8.5px;
         }
 
         .mobile-nav__link:active {

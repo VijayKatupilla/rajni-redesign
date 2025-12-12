@@ -475,7 +475,8 @@ export default function HomePage() {
           border-radius: 999px;
           font-weight: 700;
           text-decoration: none;
-          letter-spacing: 0.02em;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
           border: 1px solid transparent;
           min-width: 160px;
           transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -537,7 +538,7 @@ export default function HomePage() {
           content: "";
           position: absolute;
           inset: 0;
-          background: rgba(0, 0, 0, 0.28);
+          background: rgba(0, 0, 0, 0.32);
           z-index: -1;
         }
 
@@ -642,18 +643,18 @@ export default function HomePage() {
         .about__media {
           display: grid;
           gap: 10px;
-          max-width: none;
+          max-width: 520px;
           width: 100%;
           justify-self: stretch;
           align-self: stretch;
-          margin-top: 0;
+          margin-top: 50;
         }
 
         .about__image {
           border-radius: 12px;
           min-height: 330px;
           height: 100%;
-          aspect-ratio: unset;
+          aspect-ratio: 10/6;
         }
 
         .menu__layout {
@@ -672,7 +673,7 @@ export default function HomePage() {
         .menu__media {
           position: relative;
           justify-self: center;
-          max-width: none;
+          max-width: 520px;
           width: 100%;
           align-self: stretch;
         }
@@ -897,9 +898,9 @@ export default function HomePage() {
           }
 
           .hero__location-chip {
-            font-size: 12px;
-            padding: 10px 14px;
-            letter-spacing: 0.04em;
+            font-size: 11px;
+            padding: 7px 11px;
+            letter-spacing: 0.02em;
             white-space: nowrap;
           }
 

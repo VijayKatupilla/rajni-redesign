@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const reviews = [
   {
@@ -21,12 +21,36 @@ const reviews = [
 
 export default function GoogleReviews() {
   const [active, setActive] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setActive((prev) => (prev + 1) % reviews.length);
+    }, 6000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(delta) < 40) return;
+    if (delta > 0) {
+      prev();
+    } else {
+      next();
+    }
+  };
 
   const next = () => setActive((prev) => (prev + 1) % reviews.length);
   const prev = () => setActive((prev) => (prev - 1 + reviews.length) % reviews.length);
 
   return (
-    <section className="reviews compact" id="reviews">
+    <section className="reviews compact" id="reviews" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div className="reviews__inner reveal reveal-up">
         <div className="reviews__header">
           <h2 className="section-title">Google Reviews</h2>
@@ -151,6 +175,7 @@ export default function GoogleReviews() {
           color: var(--cream);
           font-weight: 700;
           text-decoration: none;
+          font-size: 14px;
         }
 
         .reviews__cta a:hover {
@@ -158,6 +183,10 @@ export default function GoogleReviews() {
         }
 
         @media (max-width: 720px) {
+          .reviews {
+            padding: 32px 14px 28px;
+          }
+
           .section-title {
             font-size: 34px;
           }
@@ -176,6 +205,10 @@ export default function GoogleReviews() {
 
           .reviews__nav {
             display: inline-flex;
+          }
+
+          .reviews__cta a {
+            font-size: 12.5px;
           }
         }
       `}</style>

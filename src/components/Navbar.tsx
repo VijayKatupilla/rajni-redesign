@@ -8,7 +8,7 @@ import { Facebook, Instagram } from "lucide-react";
 const sections = [
   { id: "about", label: "About" },
   { id: "menu", label: "Menu" },
-  { id: "specials", label: "Spls" },
+  { id: "specials", label: "Specials" },
   { id: "catering", label: "Catering" },
   { id: "order", label: "OrderOnline" },
 ];
@@ -122,7 +122,7 @@ export default function Navbar() {
       <div className={`mobile-drawer ${menuOpen ? "open" : ""}`}>
         <div className="drawer-header">
           <Image src="/images/logo1.png" alt="Rajni Logo" width={160} height={60} />
-          <button onClick={() => setMenuOpen(false)} aria-label="Close menu">
+          <button onClick={() => setMenuOpen(false)} aria-label="Close mobile menu">
             X
           </button>
         </div>
@@ -278,12 +278,22 @@ export default function Navbar() {
         .navbar__icons--mobile {
           margin-left: 0;
           margin-right: 6px;
-          gap: 8px;
+          gap: 10px;
         }
 
         .navbar__icons--mobile :global(svg) {
           width: 22px;
           height: 22px;
+        }
+
+        @media (max-width: 420px) {
+          .navbar__icons--mobile .google-g {
+            display: none;
+          }
+
+          .navbar__mobile-right {
+            gap: 12px;
+          }
         }
 
         .navbar__icons a {
