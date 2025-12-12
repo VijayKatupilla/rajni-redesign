@@ -209,7 +209,7 @@ export default function GoogleReviews() {
 
         @media (max-width: 720px) {
           .reviews {
-            padding: 32px 14px 28px;
+            padding: 28px 14px 8px;
           }
 
           .section-title {

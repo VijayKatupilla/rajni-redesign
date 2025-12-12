@@ -68,14 +68,15 @@ export default function HomePage() {
             <div
               key={src}
               className="hero__frame"
-              style={{ animationDelay: `${idx * 5}s`, animationDuration: "45s" }}
+              style={{ animationDelay: `${idx * 4}s`, animationDuration: "30s" }}
             >
               <Image
                 src={src}
                 alt=""
                 aria-hidden="true"
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 140vw, 100vw"
+                quality={90}
                 style={{ objectFit: "cover" }}
                 priority={idx === 0}
               />
