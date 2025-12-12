@@ -314,11 +314,32 @@ export default function HomePage() {
 
       <style jsx>{`
         .page {
+          position: relative;
           display: flex;
           flex-direction: column;
           gap: 0;
           padding-top: 96px;
           background: #000;
+        }
+
+        .page::before {
+          content: "";
+          position: fixed;
+          inset: 0;
+          z-index: -2;
+          background-image: url(${sharedBg});
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+        }
+
+        .page::after {
+          content: "";
+          position: fixed;
+          inset: 0;
+          z-index: -1;
+          background: rgba(0, 0, 0, 0.35);
+          pointer-events: none;
         }
 
         .hero {
@@ -513,7 +534,7 @@ export default function HomePage() {
         .with-bg {
           isolation: isolate;
           overflow: hidden;
-          background-attachment: fixed;
+          background-attachment: initial;
         }
 
         .hero.with-bg::before {
@@ -521,15 +542,7 @@ export default function HomePage() {
         }
 
         .with-bg::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background-image: var(--panel-bg);
-          background-size: cover;
-          background-position: center center;
-          background-repeat: no-repeat;
-          background-attachment: fixed;
-          z-index: -2;
+          content: none;
         }
 
         .with-bg::after {
