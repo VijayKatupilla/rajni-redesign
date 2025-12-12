@@ -881,32 +881,6 @@ export default function HomePage() {
             grid-template-columns: 1fr;
           }
 
-          /* Mobile: single shared background behind all sections */
-          .page::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            background-image: url(${sharedBg});
-            background-size: cover;
-            background-position: center top;
-            background-repeat: no-repeat;
-            pointer-events: none;
-          }
-
-          .page::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background: rgba(0, 0, 0, 0.32);
-            pointer-events: none;
-          }
-
-          .with-bg::before {
-            content: none;
-          }
-
           .about__media,
           .menu__media {
             max-width: 100%;
