@@ -96,10 +96,10 @@ export default function Navbar() {
         <div className="navbar__mobile-right">
           <div className="navbar__icons navbar__icons--mobile">
             <a href="https://www.facebook.com/p/Rajni-Madison-61555122544407/" target="_blank" rel="noreferrer" aria-label="Facebook">
-              <Facebook size={16} />
+              <Facebook size={20} />
             </a>
             <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
-              <Instagram size={16} />
+              <Instagram size={20} />
             </a>
             <a
               className="google-g"
@@ -278,6 +278,12 @@ export default function Navbar() {
         .navbar__icons--mobile {
           margin-left: 0;
           margin-right: 6px;
+          gap: 8px;
+        }
+
+        .navbar__icons--mobile :global(svg) {
+          width: 22px;
+          height: 22px;
         }
 
         .navbar__icons a {
@@ -287,9 +293,9 @@ export default function Navbar() {
 
         .google-g {
           font-weight: 800;
-          font-size: 13px;
-          width: 22px;
-          height: 22px;
+          font-size: 14px;
+          width: 26px;
+          height: 26px;
           border-radius: 50%;
           border: 1px solid rgba(255, 255, 255, 0.4);
           align-items: center;

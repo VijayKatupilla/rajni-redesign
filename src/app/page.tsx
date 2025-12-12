@@ -879,6 +879,11 @@ export default function HomePage() {
             grid-template-columns: 1fr;
           }
 
+          .with-bg::before {
+            background-attachment: scroll;
+            background-position: center top;
+          }
+
           .about__media,
           .menu__media {
             max-width: 100%;
