@@ -75,8 +75,8 @@ export default function MobileBottomNav() {
 
         .mobile-nav__links {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
-          gap: 8px;
+          grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+          gap: 6px;
           align-items: stretch;
         }
 
@@ -84,16 +84,16 @@ export default function MobileBottomNav() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 7px 9px;
+          padding: 6px 7px;
           border-radius: 10px;
           border: 1px solid rgba(0, 0, 0, 0.08);
           background: rgba(255, 255, 255, 0.92);
           color: #1b1209;
           font-weight: 700;
-          letter-spacing: 0.01em;
+          letter-spacing: 0;
           text-decoration: none;
           text-transform: uppercase;
-          font-size: 10px;
+          font-size: 9px;
         }
 
         .mobile-nav__link:active {

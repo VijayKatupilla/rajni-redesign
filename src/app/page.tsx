@@ -893,6 +893,18 @@ export default function HomePage() {
             min-height: 260px;
             aspect-ratio: 4 / 3;
           }
+
+          .hero__location-chip {
+            font-size: 12px;
+            padding: 10px 14px;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+          }
+
+          .about__image :global(img),
+          .menu__image :global(img) {
+            filter: brightness(1.08) contrast(1.08);
+          }
         }
       `}</style>
     </div>

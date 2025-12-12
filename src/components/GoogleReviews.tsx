@@ -5,7 +5,8 @@ export default function GoogleReviews() {
     <section className="reviews compact" id="reviews">
       <div className="reviews__inner reveal reveal-up">
         <div className="reviews__header">
-          <h2 className="section-title">Google Reviews</h2>
+          <h2 className="section-title desktop">Google Reviews</h2>
+          <h2 className="section-title mobile">&lt; reviews &gt;</h2>
           <p className="lede narrow">
             "Authentic, warm, and delicious" is what we hear most often. Here's a sample of what diners love about Rajni.
           </p>
@@ -71,6 +72,10 @@ export default function GoogleReviews() {
           letter-spacing: 0.04em;
         }
 
+        .section-title.mobile {
+          display: none;
+        }
+
         .reviews__grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -107,6 +112,27 @@ export default function GoogleReviews() {
 
         .reviews__cta a:hover {
           text-decoration: underline;
+        }
+
+        @media (max-width: 720px) {
+          .section-title.desktop {
+            display: none;
+          }
+
+          .section-title.mobile {
+            display: block;
+            font-size: 28px;
+            letter-spacing: 0.12em;
+            margin-bottom: 6px;
+          }
+
+          .lede {
+            font-size: 14px;
+          }
+
+          .reviews__grid {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
     </section>
