@@ -51,8 +51,6 @@ export default function MobileBottomNav() {
           <a
             key={link.label}
             href={link.href}
-            target={link.external ? "_blank" : undefined}
-            rel={link.external ? "noreferrer" : undefined}
             className="mobile-nav__link"
           >
             {link.label}
