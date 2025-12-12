@@ -106,7 +106,7 @@ export default function Footer() {
 
       <style jsx>{`
         .footer {
-          background: rgba(76, 45, 28, 0.7);
+          background: linear-gradient(180deg, rgba(76, 45, 28, 0.9), rgba(76, 45, 28, 0.7));
           padding: 44px 18px 24px;
           border-top: 1px solid rgba(255, 255, 255, 0.12);
           color: #f7efe2;
@@ -223,13 +223,13 @@ export default function Footer() {
           gap: 4px;
           padding: 10px 12px;
           border-radius: 12px;
-          background: rgba(206, 197, 197, 0.78);
-          border: 1px solid var(--border);
-          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
         }
 
         .footer__location--list {
-          background: rgba(206, 197, 197, 0.78);
+          background: rgba(255, 255, 255, 0.08);
         }
 
         .footer__location-buttons {

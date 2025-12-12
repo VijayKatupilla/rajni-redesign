@@ -90,9 +90,33 @@ export default function GoogleReviews() {
       <style jsx>{`
         .reviews {
           padding: 42px 18px 46px;
-          background: rgba(85, 51, 32, 0.55);
+          position: relative;
+          overflow: hidden;
+          isolation: isolate;
           border-top: 1px solid rgba(255, 255, 255, 0.1);
           border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .reviews::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-image: url("/images/gallery-2.0.jpg");
+          background-size: cover;
+          background-position: center;
+          filter: blur(18px) saturate(1.08);
+          transform: scale(1.06);
+          z-index: -2;
+        }
+
+        .reviews::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(76, 45, 28, 0.82), rgba(76, 45, 28, 0.7));
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          z-index: -1;
         }
 
         .reviews__inner {
@@ -100,6 +124,7 @@ export default function GoogleReviews() {
           margin: 0 auto;
           display: grid;
           gap: 16px;
+          position: relative;
           background: rgba(255, 245, 235, 0.08);
           border: 1px solid rgba(255, 255, 255, 0.12);
           border-radius: 18px;

@@ -7,15 +7,15 @@ import GoogleReviews from "../components/GoogleReviews";
 const heroReel = [
   "/images/gallery-1.jpg",
   "/images/gallery-3.jpg",
-  "/images/gallery-10",
+  "/images/gallery-10.jpg",
   "/images/gallery-4.jpg",
-  "/images/gallery-17",
+  "/images/gallery-17.jpg",
   "/images/gallery-5.jpg",
-  "/images/gallery-11",
+  "/images/gallery-11.jpg",
   "/images/gallery-6.jpg",
   "/images/gallery-9.jpg",
-  "/images/gallery-15",
-  "/images/gallery-16",
+  "/images/gallery-15.jpg",
+  "/images/gallery-16.jpg",
 ];
 const sharedBg = "/images/gallery-2.0.jpg";
 
@@ -180,7 +180,7 @@ export default function HomePage() {
       <section
         id="order"
         className="panel with-bg"
-        style={{ ["--panel-bg" as string]: "linear-gradient(135deg, #1f0f08, #3a1d0d)" }}
+        style={{ ["--panel-bg" as string]: `url(${sharedBg})` }}
       >
         <div className="panel__content reveal reveal-up">
           <h2 className="section-title center">Order Online</h2>
@@ -555,6 +555,18 @@ export default function HomePage() {
         #specials.with-bg::after,
         #catering.with-bg::after {
           background: transparent;
+        }
+
+        #order.with-bg::before {
+          filter: blur(18px) saturate(1.1);
+          transform: scale(1.05);
+          background-position: center;
+        }
+
+        #order.with-bg::after {
+          background: linear-gradient(180deg, rgba(76, 45, 28, 0.82), rgba(76, 45, 28, 0.7));
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
         }
 
         .panel__content {
