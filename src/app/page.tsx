@@ -72,7 +72,8 @@ export default function HomePage() {
             >
               <Image
                 src={src}
-                alt={`Rajni ambience ${idx + 1}`}
+                alt=""
+                aria-hidden="true"
                 fill
                 sizes="100vw"
                 style={{ objectFit: "cover" }}
@@ -880,9 +881,28 @@ export default function HomePage() {
             grid-template-columns: 1fr;
           }
 
-          /* Mobile: use a single shared background behind the whole page */
-          .page::before,
-          .page::after,
+          /* Mobile: single shared background behind all sections */
+          .page::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: url(${sharedBg});
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            pointer-events: none;
+          }
+
+          .page::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: rgba(0, 0, 0, 0.32);
+            pointer-events: none;
+          }
+
           .with-bg::before {
             content: none;
           }
