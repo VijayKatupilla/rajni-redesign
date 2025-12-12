@@ -272,7 +272,7 @@ export default function Footer() {
 
         @media (max-width: 720px) {
           .footer {
-            padding: 20px 16px 20px;
+            padding: 20px 16px calc(20px + 56px + env(safe-area-inset-bottom));
           }
         }
       `}</style>
