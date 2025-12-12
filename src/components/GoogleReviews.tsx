@@ -1,38 +1,59 @@
 "use client";
 
+import { useState } from "react";
+
+const reviews = [
+  {
+    quote: '"Authentic Indian food! The flavors were perfect and service was top-notch. Definitely coming back again."',
+    author: "- Priya S.",
+  },
+  {
+    quote:
+      '"Great variety and amazing taste! The butter chicken and naan are my favorites. Highly recommend Rajni for family dinners."',
+    author: "- Arjun P.",
+  },
+  {
+    quote:
+      '"We ordered catering for our event and everyone loved it! Fresh, flavorful, and delivered on time. Excellent service!"',
+    author: "- Jessica L.",
+  },
+];
+
 export default function GoogleReviews() {
+  const [active, setActive] = useState(0);
+
+  const next = () => setActive((prev) => (prev + 1) % reviews.length);
+  const prev = () => setActive((prev) => (prev - 1 + reviews.length) % reviews.length);
+
   return (
     <section className="reviews compact" id="reviews">
       <div className="reviews__inner reveal reveal-up">
         <div className="reviews__header">
-          <h2 className="section-title desktop">Google Reviews</h2>
-          <h2 className="section-title mobile">&lt; reviews &gt;</h2>
+          <h2 className="section-title">Google Reviews</h2>
           <p className="lede narrow">
             "Authentic, warm, and delicious" is what we hear most often. Here's a sample of what diners love about Rajni.
           </p>
         </div>
 
         <div className="reviews__grid">
-          <div className="reviews__card">
-            <p>
-              "Authentic Indian food! The flavors were perfect and service was top-notch. Definitely coming back again."
-            </p>
-            <span>- Priya S.</span>
-          </div>
-          <div className="reviews__card">
-            <p>
-              "Great variety and amazing taste! The butter chicken and naan are my favorites. Highly recommend Rajni for
-              family dinners."
-            </p>
-            <span>- Arjun P.</span>
-          </div>
-          <div className="reviews__card">
-            <p>
-              "We ordered catering for our event and everyone loved it! Fresh, flavorful, and delivered on time. Excellent
-              service!"
-            </p>
-            <span>- Jessica L.</span>
-          </div>
+          {reviews.map((item, idx) => (
+            <div key={item.author + idx} className={`reviews__card ${idx === active ? "active" : ""}`}>
+              <p>{item.quote}</p>
+              <span>{item.author}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="reviews__nav" aria-label="Review navigation">
+          <button type="button" onClick={prev} aria-label="Previous review">
+            &lt;
+          </button>
+          <span className="reviews__nav-index">
+            {active + 1} / {reviews.length}
+          </span>
+          <button type="button" onClick={next} aria-label="Next review">
+            &gt;
+          </button>
         </div>
 
         <div className="reviews__cta">
@@ -72,10 +93,6 @@ export default function GoogleReviews() {
           letter-spacing: 0.04em;
         }
 
-        .section-title.mobile {
-          display: none;
-        }
-
         .reviews__grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -90,6 +107,7 @@ export default function GoogleReviews() {
           color: rgba(255, 255, 255, 0.82);
           line-height: 1.6;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+          display: block;
         }
 
         .reviews__card span {
@@ -97,6 +115,31 @@ export default function GoogleReviews() {
           margin-top: 10px;
           color: var(--accent);
           font-weight: 700;
+        }
+
+        .reviews__nav {
+          display: none;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          margin-top: -4px;
+        }
+
+        .reviews__nav button {
+          background: rgba(255, 255, 255, 0.12);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          color: #fff;
+          border-radius: 10px;
+          width: 44px;
+          height: 38px;
+          font-size: 18px;
+          font-weight: 800;
+        }
+
+        .reviews__nav-index {
+          color: var(--cream);
+          font-weight: 700;
+          letter-spacing: 0.02em;
         }
 
         .reviews__cta {
@@ -115,23 +158,24 @@ export default function GoogleReviews() {
         }
 
         @media (max-width: 720px) {
-          .section-title.desktop {
-            display: none;
-          }
-
-          .section-title.mobile {
-            display: block;
-            font-size: 28px;
-            letter-spacing: 0.12em;
-            margin-bottom: 6px;
-          }
-
-          .lede {
-            font-size: 14px;
+          .section-title {
+            font-size: 34px;
           }
 
           .reviews__grid {
             grid-template-columns: 1fr;
+          }
+
+          .reviews__card {
+            display: none;
+          }
+
+          .reviews__card.active {
+            display: block;
+          }
+
+          .reviews__nav {
+            display: inline-flex;
           }
         }
       `}</style>

@@ -94,6 +94,23 @@ export default function Navbar() {
         </div>
 
         <div className="navbar__mobile-right">
+          <div className="navbar__icons navbar__icons--mobile">
+            <a href="https://www.facebook.com/p/Rajni-Madison-61555122544407/" target="_blank" rel="noreferrer" aria-label="Facebook">
+              <Facebook size={16} />
+            </a>
+            <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <Instagram size={16} />
+            </a>
+            <a
+              className="google-g"
+              href="https://www.google.com/search?q=rajni+indian+cuisine+madison+wi"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Google"
+            >
+              G
+            </a>
+          </div>
           <button className="navbar__mobile-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
             <span aria-hidden="true">&#9776;</span>
           </button>
@@ -256,6 +273,11 @@ export default function Navbar() {
           align-items: center;
           gap: 6px;
           margin-left: 8px;
+        }
+
+        .navbar__icons--mobile {
+          margin-left: 0;
+          margin-right: 6px;
         }
 
         .navbar__icons a {
