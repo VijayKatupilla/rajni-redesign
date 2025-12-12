@@ -1,14 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
 :root {
-  --bg: #f5f0ea;
-  --panel: #ffffff;
-  --gold: #c48a2e;
-  --cream: #1f1207;
-  --text: #2a1b0f;
-  --muted: #6a5540;
-  --accent: #7a2f1b;
-  --border: rgba(46, 25, 11, 0.14);
-  --heading-font: "Georgia", "Times New Roman", serif;
-  --body-font: "Inter", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  --bg: #000000;
+  --panel: rgba(255, 255, 255, 0.04);
+  --gold: #f4d58d;
+  --cream: #f7efe2;
+  --text: #f7efe2;
+  --muted: rgba(255, 255, 255, 0.78);
+  --accent: #f0c777;
+  --border: rgba(255, 255, 255, 0.18);
+  --heading-font: "Montserrat", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  --body-font: "Montserrat", "Helvetica Neue", system-ui, -apple-system, sans-serif;
 }
 
 * {
@@ -22,10 +24,37 @@ body {
   color: var(--text);
   line-height: 1.6;
   letter-spacing: 0.01em;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 a {
   color: inherit;
+}
+
+body,
+p,
+a,
+span,
+label,
+li,
+input,
+textarea,
+button {
+  font-family: var(--body-font);
+  font-weight: 500;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading-font);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 img {
@@ -34,9 +63,9 @@ img {
 }
 
 main {
-  background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.78), transparent 30%),
-    radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.82), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.95) 55%, #fff 100%);
+  background: radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.08), transparent 30%),
+    radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.96) 55%, #000 100%);
 }
 
 @media (max-width: 980px) {

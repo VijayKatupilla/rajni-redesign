@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 
 const links = [
-  { label: "Order", href: "https://order.toasttab.com/online/rajni-madison-429-commerce-drive", external: true },
-  { label: "Reserve", href: "#reserve" },
-  { label: "Specials", href: "#specials" },
-  { label: "Gallery", href: "#gallery" },
+  { label: "About", href: "#about" },
+  { label: "Menu", href: "#menu" },
+  { label: "Spls", href: "#specials" },
+  { label: "Catering", href: "#catering" },
+  { label: "Order", href: "#order" },
 ];
 
 export default function MobileBottomNav() {
@@ -66,8 +67,8 @@ export default function MobileBottomNav() {
           left: 0;
           right: 0;
           padding: 9px 12px calc(10px + env(safe-area-inset-bottom));
-          background: #ffffff;
-          color: var(--cream);
+          background: rgba(255, 255, 255, 0.86);
+          color: #1b1209;
           z-index: 130;
           border-top: 1px solid var(--border);
           box-shadow: 0 -10px 22px rgba(0, 0, 0, 0.08);
@@ -87,9 +88,9 @@ export default function MobileBottomNav() {
           justify-content: center;
           padding: 9px 10px;
           border-radius: 10px;
-          border: 1px solid var(--border);
-          background: #f9f5ef;
-          color: var(--cream);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          background: rgba(255, 255, 255, 0.92);
+          color: #1b1209;
           font-weight: 700;
           letter-spacing: 0.02em;
           text-decoration: none;

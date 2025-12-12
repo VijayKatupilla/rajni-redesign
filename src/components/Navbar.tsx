@@ -3,20 +3,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Facebook, Instagram } from "lucide-react";
 
-const sections = ["home", "about", "experience", "specials", "reserve", "gallery", "reviews"];
+const sections = [
+  { id: "about", label: "About" },
+  { id: "menu", label: "Menu" },
+  { id: "specials", label: "Spls" },
+  { id: "catering", label: "Catering" },
+  { id: "order", label: "OrderOnline" },
+];
 
 export default function Navbar() {
-  const [active, setActive] = useState("home");
+  const [active, setActive] = useState(sections[0].id);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollPos = window.scrollY + 140;
+      setIsScrolled(window.scrollY > 30);
       for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i]);
+        const section = document.getElementById(sections[i].id);
         if (section && section.offsetTop <= scrollPos) {
-          setActive(sections[i]);
+          setActive(sections[i].id);
           break;
         }
       }
@@ -33,7 +42,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="navbar">
+      <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
         <div className="navbar__logo">
           <Link href="#home">
             <Image src="/images/logo1.png" alt="Rajni Logo" width={180} height={64} priority />
@@ -42,16 +51,38 @@ export default function Navbar() {
 
         <div className="navbar__links">
           {sections.map((section) => (
-            <a key={section} href={`#${section}`} className={active === section ? "active" : ""}>
-              {section.charAt(0).toUpperCase() + section.slice(1)}
+            <a key={section.id} href={`#${section.id}`} className={active === section.id ? "active" : ""}>
+              {section.label}
             </a>
           ))}
+          <a
+            className="gift-link"
+            href="https://order.toasttab.com/egiftcards/rajni-madison-429-commerce-drive"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Buy Gift Card
+          </a>
         </div>
 
         <div className="navbar__actions">
-          <a className="ghost" href="#reserve" aria-label="Reserve a table">
-            Reserve
-          </a>
+          <div className="navbar__icons">
+            <a href="https://www.facebook.com/p/Rajni-Madison-61555122544407/" target="_blank" rel="noreferrer" aria-label="Facebook">
+              <Facebook size={16} />
+            </a>
+            <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <Instagram size={16} />
+            </a>
+            <a
+              className="google-g"
+              href="https://www.google.com/search?q=rajni+indian+cuisine+madison+wi"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Google"
+            >
+              G
+            </a>
+          </div>
           <a
             className="solid"
             href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
@@ -80,14 +111,20 @@ export default function Navbar() {
         </div>
         <div className="drawer-links">
           {sections.map((section) => (
-            <a key={section} href={`#${section}`} onClick={() => setMenuOpen(false)}>
-              {section.charAt(0).toUpperCase() + section.slice(1)}
+            <a key={section.id} href={`#${section.id}`} onClick={() => setMenuOpen(false)}>
+              {section.label}
             </a>
           ))}
         </div>
         <div className="drawer-actions">
-          <a className="ghost" href="#reserve" onClick={() => setMenuOpen(false)}>
-            Reserve
+          <a
+            className="ghost"
+            href="https://order.toasttab.com/egiftcards/rajni-madison-429-commerce-drive"
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => setMenuOpen(false)}
+          >
+            Buy Gift Card
           </a>
           <a
             className="solid"
@@ -111,13 +148,22 @@ export default function Navbar() {
           display: grid;
           grid-template-columns: 1fr 2fr 1fr;
           align-items: center;
-          gap: 18px;
-          padding: 14px 32px;
-          background: rgba(255, 255, 255, 0.92);
-          backdrop-filter: blur(16px);
-          border-bottom: 1px solid var(--border);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+          gap: 14px;
+          padding: 12px 22px;
+          background: linear-gradient(180deg, rgba(76, 45, 28, 0.9), rgba(76, 45, 28, 0.7));
+          backdrop-filter: blur(4px);
+          border-bottom: none;
+          box-shadow: none;
           font-family: var(--body-font);
+          color: #f6f6f6;
+          transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .navbar.scrolled {
+          background: linear-gradient(180deg, rgba(76, 45, 28, 0.98), rgba(76, 45, 28, 0.85));
+          backdrop-filter: blur(5px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
         }
 
         .navbar__logo :global(img) {
@@ -128,15 +174,16 @@ export default function Navbar() {
         .navbar__links {
           display: flex;
           justify-content: center;
-          gap: 20px;
+          gap: 16px;
           text-transform: uppercase;
           letter-spacing: 0.06em;
-          font-size: clamp(12px, 1.1vw, 14px);
+          font-size: clamp(15px, 1vw, 20px);
           font-family: var(--heading-font);
+          align-items: center;
         }
 
         .navbar__links a {
-          color: var(--muted);
+          color: rgba(255, 255, 255, 0.76);
           padding-bottom: 6px;
           border-bottom: 2px solid transparent;
           transition: color 0.2s ease, border-color 0.2s ease;
@@ -144,14 +191,26 @@ export default function Navbar() {
 
         .navbar__links a:hover,
         .navbar__links a.active {
-          color: var(--text);
-          border-color: var(--gold);
+          color: #fff;
+          border-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .gift-link {
+          color: #fff;
+          font-weight: 800;
+          border-bottom: 2px solid transparent;
+          padding-bottom: 6px;
+          text-decoration: none;
+        }
+
+        .gift-link:hover {
+          border-color: rgba(255, 255, 255, 0.7);
         }
 
         .navbar__actions {
           display: flex;
           justify-content: flex-end;
-          gap: 10px;
+          gap: 8px;
         }
 
         .navbar__mobile-right {
@@ -160,20 +219,20 @@ export default function Navbar() {
 
         .navbar__actions a,
         .drawer-actions a {
-          padding: 10px 14px;
+          padding: 9px 12px;
           border-radius: 999px;
-          font-weight: 700;
+          font-weight: 800;
           text-decoration: none;
           text-align: center;
-          font-size: 14px;
+          font-size: 13px;
           letter-spacing: 0.01em;
           font-family: var(--body-font);
         }
 
         .ghost {
-          border: 1px solid var(--border);
-          color: var(--text);
-          background: rgba(255, 255, 255, 0.6);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: #fff;
+          background: rgba(255, 255, 255, 0.08);
         }
 
         .solid {
@@ -185,11 +244,35 @@ export default function Navbar() {
         .navbar__mobile-toggle {
           display: none;
           background: transparent;
-          border: 1px solid var(--border);
-          color: var(--text);
+          border: 1px solid rgba(255, 255, 255, 0.26);
+          color: #fff;
           font-size: 28px;
           padding: 6px 12px;
           border-radius: 10px;
+        }
+
+        .navbar__icons {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          margin-left: 8px;
+        }
+
+        .navbar__icons a {
+          color: #fff;
+          display: inline-flex;
+        }
+
+        .google-g {
+          font-weight: 800;
+          font-size: 13px;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.08);
         }
 
         .backdrop {

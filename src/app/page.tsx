@@ -1,137 +1,48 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import GoogleReviews from "../components/GoogleReviews";
-import { locations, useLocation } from "../context/LocationContext";
 
-const heroBackground = "/images/gallery-3.jpg";
-
-const aboutPoints = [
-  "Small-batch curries, hand-ground spices, and recipes passed through our family.",
-  "A dining room layered with red lounge seating, art, and the sense of welcome.",
-  "Cocktails and lassis designed to cool, brighten, and celebrate every visit.",
+const heroReel = [
+  "/images/gallery-1.jpg",
+  "/images/gallery-3.jpg",
+  "/images/gallery-10",
+  "/images/gallery-4.jpg",
+  "/images/gallery-17",
+  "/images/gallery-5.jpg",
+  "/images/gallery-11",
+  "/images/gallery-6.jpg",
+  "/images/gallery-9.jpg",
+  "/images/gallery-15",
+  "/images/gallery-16",
 ];
-
-const experience = [
-  {
-    title: "Crafted Like Home",
-    description: "Family recipes and masalas toasted daily for depth and aroma.",
-  },
-  {
-    title: "Sip & Savor",
-    description: "Signature lassis, curated wines, and mocktails that balance the spice.",
-  },
-  {
-    title: "Atmosphere",
-    description: "Red booths, soft light, and playlists tuned for nights that linger.",
-  },
-];
-
-const specials = [
-  {
-    title: "Weekend Chef's Thali",
-    description: "Rotating curries, house pickle, and dessert for two - built for slow, celebratory meals.",
-    tag: "Saturday + Sunday",
-  },
-  {
-    title: "Express Lunch",
-    description: "Fast, vibrant plates with naan and salad - perfect for weekday breaks without losing flavor.",
-    tag: "Weekdays 11-2:30",
-  },
-  {
-    title: "Two Curry Combo",
-    description: "Choose any two curries with rice, naan, and chutneys - shareable and always changing.",
-    tag: "All Week",
-  },
-];
-
-const galleryImages = [
-  { src: "/images/gallery-1.jpg", alt: "Rajni dining room with red booths" },
-  { src: "/images/gallery-2.jpg", alt: "Rajni mural art" },
-  { src: "/images/gallery-3.jpg", alt: "Rajni Madison skyline art" },
-  { src: "/images/gallery-4.jpg", alt: "Rajni dining setup" },
-  { src: "/images/gallery-5.jpg", alt: "Rajni celebration balloons" },
-  { src: "/images/gallery-6.jpg", alt: "Rajni carved fruit display" },
-  { src: "/images/gallery-7.jpg", alt: "Rajni exterior sign at night" },
-  { src: "/images/gallery-8.jpg", alt: "Rajni exterior entrance" },
-  { src: "/images/gallery-9.jpg", alt: "Rajni dining booths at night" },
-];
+const sharedBg = "/images/gallery-2.0.jpg";
 
 export default function HomePage() {
-  const { selectedIndex, setSelectedIndex } = useLocation();
-  const [isReserveOpen, setIsReserveOpen] = useState(false);
   const [isCateringOpen, setIsCateringOpen] = useState(false);
-  const [galleryIndex, setGalleryIndex] = useState(0);
-  const [reserveStatus, setReserveStatus] = useState<{ state: "idle" | "loading" | "success" | "error"; message?: string; ref?: string }>({
-    state: "idle",
-  });
   const [cateringStatus, setCateringStatus] = useState<{ state: "idle" | "loading" | "success" | "error"; message?: string; ref?: string }>({
     state: "idle",
   });
 
-  const activeLocation = useMemo(() => locations[selectedIndex], [selectedIndex]);
-  const phoneHref = activeLocation.phone.replace(/[^\d]/g, "");
-  const currentGalleryImage = galleryImages[galleryIndex];
-
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
+      (entries) =>
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-          }
-        });
-      },
-      { threshold: 0.18 }
+          entry.target.classList.toggle("in-view", entry.isIntersecting);
+        }),
+      { threshold: 0.2 }
     );
-
-    const revealEls = document.querySelectorAll(".reveal");
-    revealEls.forEach((el) => observer.observe(el));
-
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => setGalleryIndex((i) => (i + 1) % galleryImages.length), 3600);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleReserveSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (reserveStatus.state === "loading") return;
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries());
-
-    setReserveStatus({ state: "loading" });
-    try {
-      const res = await fetch("/api/reserve", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Something went wrong");
-
-      setReserveStatus({ state: "success", message: data?.message, ref: data?.reference });
-      if (typeof form?.reset === "function") {
-        form.reset();
-      }
-    } catch (error: any) {
-      setReserveStatus({ state: "error", message: error?.message || "Failed to submit reservation" });
-    }
-  };
 
   const handleCateringSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (cateringStatus.state === "loading") return;
 
     const form = e.currentTarget;
-    const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries());
+    const payload = Object.fromEntries(new FormData(form).entries());
 
     setCateringStatus({ state: "loading" });
     try {
@@ -140,14 +51,10 @@ export default function HomePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || "Something went wrong");
-
       setCateringStatus({ state: "success", message: data?.message, ref: data?.reference });
-      if (typeof form?.reset === "function") {
-        form.reset();
-      }
+      form.reset();
     } catch (error: any) {
       setCateringStatus({ state: "error", message: error?.message || "Failed to submit catering request" });
     }
@@ -155,88 +62,113 @@ export default function HomePage() {
 
   return (
     <div className="page">
-      <section id="home" className="hero with-bg" style={{ ["--panel-bg" as string]: `url(${heroBackground})` }}>
-        <div className="hero__media">
-          <Image src={heroBackground} alt="Rajni exterior" fill priority sizes="100vw" style={{ objectFit: "cover" }} />
-        </div>
-        <div className="hero__overlay" />
-        <div className="hero__content reveal reveal-up">
-          <div className="eyebrow">Modern Indian Dining</div>
-          <h1>Rajni Indian Cuisine</h1>
-          <p className="lede">
-            A celebratory dining room with red lounge seating, handcrafted spices, and cocktails built for toasting every win.
-          </p>
-          <div className="location-tabs">
-            {locations.map((loc, index) => (
-              <button
-                key={loc.name}
-                className={`pill ${index === selectedIndex ? "active" : ""}`}
-                onClick={() => setSelectedIndex(index)}
-              >
-                {loc.name}
-              </button>
-            ))}
-          </div>
-          <div className="location-card">
-            <div>
-              <p className="eyebrow">Now viewing</p>
-              <h3>{activeLocation.name}</h3>
-              <p className="muted">{activeLocation.city}</p>
+      <section id="home" className="hero with-bg">
+        <div className="hero__reel">
+          {heroReel.map((src, idx) => (
+            <div
+              key={src}
+              className="hero__frame"
+              style={{ animationDelay: `${idx * 5}s`, animationDuration: "45s" }}
+            >
+              <Image
+                src={src}
+                alt={`Rajni ambience ${idx + 1}`}
+                fill
+                sizes="100vw"
+                style={{ objectFit: "cover" }}
+                priority={idx === 0}
+              />
             </div>
-            <div className="location-meta">
-              <span>{activeLocation.address}</span>
-              <a href={`tel:${phoneHref}`}>{activeLocation.phone}</a>
-              <div className="hero__actions">
-                {activeLocation.order ? (
-                  <a className="btn primary" href={activeLocation.order} target="_blank" rel="noreferrer">
-                    Order Online
-                  </a>
-                ) : (
-                  <a className="btn primary" href={`tel:${phoneHref}`}>
-                    Call to Order
-                  </a>
-                )}
-                <a className="btn secondary" href={activeLocation.map} target="_blank" rel="noreferrer">
-                  View on Maps
-                </a>
+          ))}
+        </div>
+        <div className="hero__glow" />
+        <div className="hero__content reveal reveal-up">
+          <p className="eyebrow">Modern Indian Dining</p>
+          <h1 className="hero__title">
+            <span className="hero__title-large">Rajni</span>
+            <span className="hero__title-small">Indian Cuisine</span>
+          </h1>
+          <p className="lede">
+            A bright, celebratory dining room with handcrafted masalas, cocktails, and catering for nights that linger.
+          </p>
+          <div className="hero__actions">
+            <a className="btn primary" href="#order">
+              Order Online
+            </a>
+            <a className="btn secondary" href="#catering">
+              Catering & Events
+            </a>
+          </div>
+        </div>
+        <div className="hero__location-chip">
+          <span className="hero__pin" aria-hidden="true" />
+          <span>429 Commerce Drive, Madison, WI 53719</span>
+        </div>
+      </section>
+
+      <section id="about" className="panel with-bg" style={{ ["--panel-bg" as string]: `url(${sharedBg})` }}>
+        <div className="panel__content reveal reveal-up about__layout">
+          <div className="about__media">
+            <div className="about__image reveal reveal-left">
+              <Image
+                src="/images/gallery-8.jpg"
+                alt="Rajni mural art"
+                fill
+                sizes="(min-width: 900px) 28vw, 88vw"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          </div>
+          <div className="about__content">
+            <h2 className="section-title">About Us</h2>
+            <p className="lede narrow">
+              Family recipes, red lounge seating, and playlists tuned to golden hour. Rajni blends small-batch curries with a modern,
+              celebratory spirit.
+            </p>
+            <div className="grid stack">
+              <div className="card reveal reveal-left">
+                <h3>Heritage</h3>
+                <p className="muted">Hand-ground spices, slow-simmered sauces, and dishes shared across generations.</p>
+              </div>
+              <div className="card reveal reveal-right">
+                <h3>Atmosphere</h3>
+                <p className="muted">Glowing tables, art-lined walls, and service that keeps the night easy.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section
-        id="about"
-        className="panel with-bg"
-        style={{ ["--panel-bg" as string]: `url(${heroBackground})` }}
-      >
-        <div className="panel__content split reveal reveal-left">
-          <div className="split__content">
-            <p className="eyebrow">About Us</p>
-            <h2>Our story, served beside you</h2>
-            <div className="story-card">
-              <h3>Our Story</h3>
-              <p className="muted">
-                Rajni is where family recipes meet a modern dining spirit. We cook slow, welcome warmly, and celebrate often.
-              </p>
-            </div>
+      <section id="menu" className="panel with-bg" style={{ ["--panel-bg" as string]: `url(${sharedBg})` }}>
+        <div className="panel__content reveal reveal-up menu__layout">
+          <div className="menu__content">
+            <h2 className="section-title">Menu</h2>
             <p className="lede narrow">
-              From hand-ground masalas to playlists that feel like golden hour, every detail is designed to feel like home - and a
-              little bit like a night out in Madison, Atlanta, or Parsippany.
+              Explore tandoor platters, street snacks, and slow-braised curries. Browse the current menu or order directly online.
             </p>
-            <div className="list">
-              {aboutPoints.map((point) => (
-                <span key={point}>{point}</span>
-              ))}
+            <div className="pill-row">
+              <span className="pill alt">Vegetarian & Vegan</span>
+              <span className="pill">Tandoor & Grills</span>
+              <span className="pill">Street Snacks</span>
+            </div>
+            <div className="hero__actions">
+              <a
+                className="btn primary menu-cta"
+                href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View Menu / Order
+              </a>
             </div>
           </div>
-          <div className="split__media reveal reveal-right">
-            <div className="media-frame">
+          <div className="menu__media">
+            <div className="menu__image reveal reveal-right">
               <Image
-                src="/images/gallery-8.jpg"
-                alt="Guests enjoying Rajni dining room"
+                src="/hero-bg.jpg"
+                alt="Rajni dishes"
                 fill
-                sizes="(min-width: 900px) 38vw, 88vw"
+                sizes="(min-width: 900px) 28vw, 88vw"
                 style={{ objectFit: "cover" }}
               />
             </div>
@@ -245,255 +177,93 @@ export default function HomePage() {
       </section>
 
       <section
-        id="experience"
+        id="order"
         className="panel with-bg"
-        style={{ ["--panel-bg" as string]: `url(${heroBackground})` }}
+        style={{ ["--panel-bg" as string]: "linear-gradient(135deg, #1f0f08, #3a1d0d)" }}
       >
         <div className="panel__content reveal reveal-up">
-          <div className="experience-layout">
-            <div className="experience-intro reveal reveal-left">
-              <p className="eyebrow">Experience</p>
-              <h2>Designed for gatherings</h2>
-              <p className="lede narrow">
-                House curries, tandoor platters, and playlists tuned to feel like Rajni energy - wrapping your night in warm
-                hospitality.
-              </p>
-              <div className="experience-media-grid">
-                <div className="experience-media reveal reveal-right">
-                  <Image
-                    src="/images/gallery-2.jpg"
-                    alt="Rajni mural art"
-                    fill
-                    sizes="(min-width: 980px) 32vw, 88vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
-                <div className="experience-media reveal reveal-right">
-                  <Image
-                    src="/images/gallery-1.jpg"
-                    alt="Rajni dining room with red booths"
-                    fill
-                    sizes="(min-width: 980px) 32vw, 88vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
-              </div>
+          <h2 className="section-title center">Order Online</h2>
+          <p className="lede narrow">
+            Pickup, delivery, and scheduled orders. Choose your time, pick your dishes, and add notes for spice or celebrations.
+          </p>
+          <div className="grid two">
+            <div className="card">
+              <h3>How it works</h3>
+              <p className="muted">Select pickup or delivery, browse curries, biryanis, and breads, and add your notes.</p>
             </div>
-            <div className="card-stack">
-              {experience.map((item, idx) => (
-                <div
-                  key={item.title}
-                  className={`card focus reveal ${idx % 2 === 0 ? "reveal-left" : "reveal-right"}`}
-                >
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </div>
-              ))}
+            <div className="card">
+              <h3>Need help?</h3>
+              <p className="muted">Call and we’ll guide you through the menu.</p>
+              <a className="btn secondary" href="tel:+16081234567">
+                Call Rajni Madison
+              </a>
             </div>
+          </div>
+          <div className="hero__actions">
+            <a
+              className="btn primary"
+              href="https://order.toasttab.com/online/rajni-madison-429-commerce-drive"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Order Now
+            </a>
           </div>
         </div>
       </section>
 
-      <section
-        id="specials"
-        className="panel with-bg"
-        style={{ ["--panel-bg" as string]: "url(/hero-bg.jpg)" }}
-      >
+      <section id="specials" className="panel with-bg" style={{ ["--panel-bg" as string]: `url(${sharedBg})` }}>
         <div className="panel__content reveal reveal-up">
-          <div className="section-header">
-            <p className="eyebrow">Weekend & Daily Specials</p>
-            <h2>Seasonal plates that keep changing</h2>
-            <p className="lede narrow">
-              The board shifts weekly - weekend chef features, speedy lunches, and shareable curry duos.
-            </p>
-          </div>
+          <h2 className="section-title">Weekend & Daily Specials</h2>
+          <p className="lede narrow">Rotating thalis, speedy lunches, and shareable curry duos crafted for every visit.</p>
           <div className="card-grid">
-            {specials.map((item) => (
+            {[
+              { title: "Weekend Chef's Thali", tag: "Sat + Sun", desc: "Rotating curries, house pickle, dessert for two." },
+              { title: "Express Lunch", tag: "Weekdays 11-2:30", desc: "Fast plates with naan and salad—perfect mid-day." },
+              { title: "Two Curry Combo", tag: "All Week", desc: "Choose any two curries with rice, naan, and chutneys." },
+            ].map((item) => (
               <div key={item.title} className="card reveal reveal-up">
                 <div className="pill-row">
                   <span className="pill alt">{item.tag}</span>
                 </div>
                 <h3>{item.title}</h3>
-                <p>{item.description}</p>
+                <p>{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="reserve" className="panel alt compact">
-        <div className="panel__content reveal reveal-up forms-grid">
-          <div className="section-header">
-            <p className="eyebrow">Book or plan</p>
-            <h2>Reserve a table or plan catering</h2>
-            <p className="lede narrow">Two quick options-tap to open the full form for each.</p>
-          </div>
-          <div className="forms-columns">
-            <div className="form-card reveal reveal-up">
-              <div className="form-card__head">
-                <h3>Reserve a Table</h3>
-                <span className="pill alt">Dine-in</span>
-              </div>
-              <p className="muted">
-                Hold a table for lunch or dinner. Share your time, party size, and any celebrations-our team will confirm.
-              </p>
-              <div className="pill-row">
-                <span className="pill alt">Lunch & Dinner</span>
-                <span className="pill">Groups up to 20</span>
-              </div>
-              <button type="button" className="btn primary" onClick={() => setIsReserveOpen(true)}>
-                Open reservation form
-              </button>
-            </div>
-
-            <div className="form-card reveal reveal-up">
-              <div className="form-card__head">
-                <h3>Catering Enquiry</h3>
-                <span className="pill">Events</span>
-              </div>
-              <p className="muted">
-                For weddings, corporate lunches, and celebrations. Tell us your guest count, date, and service style to begin.
-              </p>
-              <div className="pill-row">
-                <span className="pill">Staffed</span>
-                <span className="pill alt">Buffet or plated</span>
-              </div>
-              <button type="button" className="btn secondary" onClick={() => setIsCateringOpen(true)}>
-                Open catering form
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="gallery" className="panel gallery-panel compact">
+      <section id="catering" className="panel with-bg" style={{ ["--panel-bg" as string]: `url(${sharedBg})` }}>
         <div className="panel__content reveal reveal-up">
-          <div className="section-header">
-            <p className="eyebrow">Gallery</p>
-            <h2>Inside Rajni</h2>
-            <p className="lede narrow">Images glide in, side-by-side, just like a stroll through the dining room.</p>
-          </div>
-          <div className="gallery-window">
-            <button
-              className="gallery-arrow"
-              aria-label="Previous image"
-              onClick={() => setGalleryIndex((i) => (i - 1 + galleryImages.length) % galleryImages.length)}
-            >
-              &#8249;
-            </button>
-            <div className="gallery-main">
-              <Image
-                src={currentGalleryImage.src}
-                alt={currentGalleryImage.alt}
-                width={1200}
-                height={800}
-                sizes="(min-width: 900px) 70vw, 94vw"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                priority
-              />
-              <div className="gallery-caption">
-                <span className="muted">{currentGalleryImage.alt}</span>
-              </div>
+          <h2 className="section-title center">Catering & Events</h2>
+          <p className="lede narrow">Tell us about your occasion and guest count; we’ll tailor the menu and service style.</p>
+          <div className="card focus">
+            <div className="pill-row">
+              <span className="pill">Staffed</span>
+              <span className="pill alt">Buffet or plated</span>
             </div>
-            <button
-              className="gallery-arrow"
-              aria-label="Next image"
-              onClick={() => setGalleryIndex((i) => (i + 1) % galleryImages.length)}
-            >
-              &#8250;
-            </button>
+            <div className="hero__actions">
+              <button type="button" className="btn secondary" onClick={() => setIsCateringOpen(true)}>
+                Open Catering Form
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
       <GoogleReviews />
 
-      {isReserveOpen && (
-        <div
-          className="modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Reservation form"
-          onClick={() => setIsReserveOpen(false)}
-        >
-          <div className="modal__content" onClick={(e: { stopPropagation: () => any }) => e.stopPropagation()}>
-            <div className="modal__header">
-              <h3>Reserve a table</h3>
-              <button className="icon-btn" onClick={() => setIsReserveOpen(false)} aria-label="Close reservation form">
-                X
-              </button>
-            </div>
-            <form
-              className="form"
-              onSubmit={handleReserveSubmit}
-            >
-              <div className="form-grid">
-                <label>
-                  Name
-                  <input name="name" placeholder="Your name" required />
-                </label>
-                <label>
-                  Email
-                  <input type="email" name="email" placeholder="you@example.com" required />
-                </label>
-                <label>
-                  Phone
-                  <input name="phone" placeholder="(555) 555-5555" required />
-                </label>
-                <label>
-                  Party Size
-                  <input type="number" name="party" min="1" max="20" placeholder="4" required />
-                </label>
-                <label>
-                  Date
-                  <input type="date" name="date" required />
-                </label>
-                <label>
-                  Time
-                  <input type="time" name="time" required />
-                </label>
-              <label className="full">
-                Notes
-                <textarea name="notes" rows={3} placeholder="Allergies, celebrations, or seating requests" />
-              </label>
-              </div>
-              <div className="status-row">
-                {reserveStatus.state === "success" && (
-                  <span className="status success">
-                    {reserveStatus.message || "Reservation received."} Ref: {reserveStatus.ref}
-                  </span>
-                )}
-                {reserveStatus.state === "error" && (
-                  <span className="status error">{reserveStatus.message || "Unable to send right now."}</span>
-                )}
-              </div>
-              <button type="submit" className="btn primary" disabled={reserveStatus.state === "loading"}>
-                {reserveStatus.state === "loading" ? "Sending..." : "Submit Reservation"}
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-
       {isCateringOpen && (
-        <div
-          className="modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Catering form"
-          onClick={() => setIsCateringOpen(false)}
-        >
-          <div className="modal__content" onClick={(e: { stopPropagation: () => any }) => e.stopPropagation()}>
+        <div className="modal" role="dialog" aria-modal="true" aria-label="Catering form" onClick={() => setIsCateringOpen(false)}>
+          <div className="modal__content" onClick={(e) => e.stopPropagation()}>
             <div className="modal__header">
               <h3>Catering inquiry</h3>
               <button className="icon-btn" onClick={() => setIsCateringOpen(false)} aria-label="Close catering form">
                 X
               </button>
             </div>
-            <form
-              className="form"
-              onSubmit={handleCateringSubmit}
-            >
+            <form className="form" onSubmit={handleCateringSubmit}>
               <div className="form-grid">
                 <label>
                   Name
@@ -548,71 +318,139 @@ export default function HomePage() {
           flex-direction: column;
           gap: 0;
           padding-top: 96px;
+          background: #000;
         }
 
         .hero {
           position: relative;
-          min-height: 82vh;
+          min-height: 100vh;
           display: grid;
           place-items: center;
           text-align: center;
           overflow: hidden;
-          color: var(--text);
+          color: #fff;
+          background: #000;
         }
 
-        .hero__media {
+        .hero__reel {
           position: absolute;
           inset: 0;
+          overflow: hidden;
+          opacity: 1;
+          filter: brightness(1.08) saturate(1.08);
         }
 
-        .hero__overlay {
+        .hero__frame {
           position: absolute;
           inset: 0;
-          background: linear-gradient(180deg, rgba(245, 240, 234, 0.08), rgba(245, 240, 234, 0.82));
+          animation: slow-pan 45s linear infinite;
+          animation-fill-mode: both;
+          transform-origin: center;
+          will-change: transform, opacity;
+          opacity: 0;
+        }
+
+        @keyframes slow-pan {
+          0% {
+            transform: scale(1) translateX(0);
+            opacity: 0;
+          }
+          5% {
+            opacity: 1;
+          }
+          20% {
+            transform: scale(1.04) translateX(2%);
+            opacity: 1;
+          }
+          30% {
+            opacity: 0;
+          }
+          100% {
+            transform: scale(1.08) translateX(6%);
+            opacity: 0;
+          }
+        }
+
+        .hero__glow {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at 50% 30%, rgba(255, 225, 170, 0.48), transparent 52%),
+            linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.32));
         }
 
         .hero__content {
           position: relative;
-          max-width: 900px;
-          padding: 0 20px 40px;
+          max-width: 880px;
+          padding: 20px;
+          display: grid;
+          gap: 12px;
+          z-index: 1;
         }
 
-        h1 {
-          font-family: var(--heading-font);
-          font-size: clamp(40px, 6vw, 62px);
-          letter-spacing: 0.01em;
-          margin: 6px 0 16px;
-          color: var(--cream);
+        .hero__title {
+          display: grid;
+          gap: 6px;
+          margin: 6px 0 10px;
         }
 
-        h2 {
+        .hero__title-large {
           font-family: var(--heading-font);
-          font-size: clamp(28px, 4vw, 40px);
-          margin: 6px 0 16px;
-          color: var(--cream);
+          font-size: clamp(60px, 8vw, 96px);
+          letter-spacing: 0.06em;
         }
 
-        h3 {
-          margin: 0 0 10px;
+        .hero__title-small {
           font-family: var(--heading-font);
-          font-size: clamp(19px, 2.2vw, 24px);
-          color: var(--cream);
+          font-size: clamp(28px, 4.8vw, 40px);
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+        }
+
+        .hero__location-chip {
+          position: absolute;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 18px;
+          background: rgba(255, 255, 255, 0.15);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          border-radius: 999px;
+          color: #fffaf3;
+          letter-spacing: 0.05em;
+          font-weight: 700;
+          box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3);
+          backdrop-filter: blur(8px);
+          z-index: 1;
+        }
+
+        .hero__pin {
+          width: 14px;
+          height: 14px;
+          border-radius: 8px 8px 8px 0;
+          transform: rotate(45deg);
+          background: #f0c777;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          display: inline-block;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
         }
 
         .eyebrow {
           text-transform: uppercase;
           letter-spacing: 0.16em;
           font-size: 12px;
-          color: var(--accent);
-          margin: 0 0 8px;
+          color: #f0c777;
+          margin: 0;
           font-weight: 700;
         }
 
         .lede {
-          color: var(--muted);
-          font-size: 16px;
+          color: rgba(255, 255, 255, 0.86);
+          font-size: 15px;
           line-height: 1.7;
-          margin: 0 auto 16px;
+          margin: 0 auto;
         }
 
         .lede.narrow {
@@ -623,7 +461,7 @@ export default function HomePage() {
           display: flex;
           justify-content: center;
           gap: 12px;
-          margin-top: 12px;
+          margin-top: 8px;
           flex-wrap: wrap;
         }
 
@@ -632,45 +470,54 @@ export default function HomePage() {
           align-items: center;
           justify-content: center;
           gap: 8px;
-          padding: 12px 18px;
+          padding: 10px 16px;
           border-radius: 999px;
           font-weight: 700;
           text-decoration: none;
           letter-spacing: 0.02em;
           border: 1px solid transparent;
-          min-width: 180px;
+          min-width: 160px;
           transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
         .btn.primary {
-          background: linear-gradient(135deg, #c48a2e, #9c5b2f);
-          color: #fff;
-          box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+          background: linear-gradient(135deg, #f8dba3, #d89a3c);
+          color: #1f1207;
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
         }
 
         .btn.secondary {
-          border-color: var(--accent);
-          color: var(--cream);
-          background: rgba(255, 255, 255, 0.82);
+          border-color: rgba(255, 255, 255, 0.36);
+          color: #f7efe2;
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .menu-cta {
+          min-width: 200px;
+          padding: 12px 18px;
+          font-size: 15px;
         }
 
         .btn:hover {
           transform: translateY(-2px);
-          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
         }
 
         .panel {
+          position: relative;
           display: flex;
           flex-direction: column;
-          gap: 20px;
-          margin: 0;
+          gap: 12px;
         }
 
         .with-bg {
-          position: relative;
           isolation: isolate;
           overflow: hidden;
-          min-height: 60vh;
+          background-attachment: fixed;
+        }
+
+        .hero.with-bg::before {
+          display: none;
         }
 
         .with-bg::before {
@@ -681,7 +528,7 @@ export default function HomePage() {
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
-          background-attachment: scroll;
+          background-attachment: fixed;
           z-index: -2;
         }
 
@@ -689,188 +536,183 @@ export default function HomePage() {
           content: "";
           position: absolute;
           inset: 0;
-          background: rgba(255, 255, 255, 0.08);
+          background: rgba(0, 0, 0, 0.28);
           z-index: -1;
+        }
+
+        #about.with-bg::before,
+        #menu.with-bg::before,
+        #specials.with-bg::before,
+        #catering.with-bg::before {
+          filter: none;
+          transform: none;
+        }
+
+        #about.with-bg::after,
+        #menu.with-bg::after,
+        #specials.with-bg::after,
+        #catering.with-bg::after {
+          background: transparent;
         }
 
         .panel__content {
           position: relative;
-          padding: 44px 20px 30px;
+          padding: 44px 20px 34px;
           display: flex;
           flex-direction: column;
-          gap: 20px;
-        }
-
-        .compact {
           gap: 14px;
         }
 
-        .compact .panel__content {
-          padding: 34px 18px 22px;
-          gap: 16px;
+        .section-title {
+          font-family: var(--heading-font);
+          font-size: clamp(46px, 6.8vw, 68px);
+          letter-spacing: 0.04em;
+          font-weight: 700;
+          margin: 0 0 6px;
+          color: #f7efe2;
         }
 
-        .compact.with-bg {
-          min-height: 48vh;
-        }
-
-        .with-bg .panel__content {
-          background: rgba(255, 255, 255, 0.56);
-          border-radius: 22px;
-          border: 1px solid var(--border);
-          box-shadow: 0 16px 28px rgba(0, 0, 0, 0.05);
-        }
-
-        .panel.alt {
-          border-block: 1px solid var(--border);
-          background: none;
-        }
-
-        .panel.alt .panel__content {
-          background: rgba(255, 255, 255, 0.9);
-          border-radius: 24px;
-          border: 1px solid var(--border);
-          box-shadow: 0 18px 36px rgba(0, 0, 0, 0.07);
-        }
-
-        .gallery-panel {
-          background: none;
-        }
-
-        .gallery-panel .panel__content {
-          background: rgba(255, 255, 255, 0.78);
-          border-radius: 20px;
-          border: 1px solid var(--border);
-          box-shadow: 0 20px 36px rgba(0, 0, 0, 0.08);
-        }
-
-        .section-header {
+        .section-title.center {
           text-align: center;
-          max-width: 920px;
-          margin: 0 auto;
         }
 
-        .experience-layout {
+        h3 {
+          margin: 0 0 8px;
+          font-family: var(--heading-font);
+          font-size: clamp(20px, 2.5vw, 26px);
+          font-weight: 700;
+          color: #f7efe2;
+        }
+
+        .muted {
+          color: rgba(255, 255, 255, 0.78);
+          font-size: 13px;
+        }
+
+        .grid.two {
           display: grid;
-          grid-template-columns: minmax(260px, 0.9fr) minmax(320px, 1.1fr);
-          gap: 22px;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 12px;
+        }
+
+        .grid.stack {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .grid.stack .card {
+          max-width: 520px;
+          width: 100%;
+          justify-self: center;
+        }
+
+        .about__layout {
+          display: grid;
+          grid-template-columns: minmax(240px, 1fr) minmax(240px, 0.8fr);
+          gap: 16px;
           align-items: start;
         }
 
-        .experience-intro {
-          text-align: left;
-          max-width: 520px;
-          }
-
-        .experience-media-grid {
+        .about__media {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-          gap: 12px;
-          margin-top: 12px;
+          gap: 10px;
+          max-width: 300px;\n          width: 100%;\n          justify-self: start;\n          margin-top: 20px;\n          margin-top: 16px;
         }
 
-        .experience-media {
+        .about__image {
           position: relative;
-          width: 100%;
-          min-height: 240px;
-          border-radius: 18px;
+          border-radius: 12px;
           overflow: hidden;
-          border: 1px solid var(--border);
-          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+          min-height: 200px;
+          aspect-ratio: 4 / 5;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
         }
 
-        .card-stack {
+        /* Adjust about layout sizing and image fit */
+        .about__layout {
           display: grid;
+          grid-template-columns: minmax(320px, 1fr) minmax(280px, 0.9fr);
+          gap: 12px;
+          align-items: start;
+        }
+
+        .about__media {
+          display: grid;
+          gap: 10px;
+          max-width: none;
+          width: 100%;
+          justify-self: stretch;
+          align-self: stretch;
+          margin-top: 0;
+        }
+
+        .about__image {
+          border-radius: 12px;
+          min-height: 330px;
+          height: 100%;
+          aspect-ratio: unset;
+        }
+
+        .menu__layout {
+          display: grid;
+          grid-template-columns: minmax(320px, 1fr) minmax(240px, 0.7fr);
           gap: 14px;
+          align-items: center;
+        }
+
+        .menu__content {
+          display: grid;
+          gap: 12px;
+          text-align: center;
+        }
+
+        .menu__media {
+          position: relative;
+          justify-self: center;
+          max-width: none;
+          width: 100%;
+          align-self: stretch;
+        }
+
+        .menu__image {
+          position: relative;
+          border-radius: 12px;
+          overflow: hidden;
+          min-height: 400px;
+          height: 100%;
+          aspect-ratio: unset;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 10px 22px rgba(0, 0, 0, 0.32);
+        }
+
+        .card {
+          background: rgba(0, 0, 0, 0.32);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 14px;
+          padding: 14px;
+          color: #f7efe2;
+          box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
+          display: grid;
+          gap: 6px;
+        }
+
+        .card.focus {
+          background: rgba(0, 0, 0, 0.5);
+          border-color: rgba(255, 255, 255, 0.2);
         }
 
         .card-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-          gap: 16px;
-        }
-
-        .card-grid.thirds {
           grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        }
-
-        .card {
-          background: var(--panel);
-          border: 1px solid var(--border);
-          border-radius: 16px;
-          padding: 18px;
-          display: grid;
-          gap: 10px;
-          min-height: 180px;
-          box-shadow: 0 12px 20px rgba(0, 0, 0, 0.06);
-        }
-
-        .card.focus {
-          background: linear-gradient(145deg, rgba(196, 138, 46, 0.08), rgba(255, 255, 255, 0.9));
-          border-color: rgba(196, 138, 46, 0.26);
+          gap: 12px;
         }
 
         .card p {
-          color: var(--muted);
           margin: 0;
+          font-size: 13px;
           line-height: 1.6;
-        }
-
-        .muted {
-          color: var(--muted);
-          font-size: 14px;
-        }
-
-        .split {
-          display: grid;
-          gap: 20px;
-          align-items: center;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        }
-
-        .split__content {
-          display: grid;
-          gap: 14px;
-          max-width: 620px;
-        }
-
-        .list {
-          display: grid;
-          gap: 8px;
-          color: var(--cream);
-          font-weight: 600;
-        }
-
-        .split__media {
-          display: flex;
-          justify-content: center;
-        }
-
-        .media-card,
-        .media-frame {
-          width: min(440px, 100%);
-          border-radius: 22px;
-          overflow: hidden;
-          position: relative;
-          border: 1px solid var(--border);
-          box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
-          min-height: 320px;
-        }
-
-        .story-card {
-          background: rgba(255, 255, 255, 0.9);
-          border: 1px solid var(--border);
-          border-radius: 16px;
-          padding: 14px 16px;
-          box-shadow: 0 12px 22px rgba(0, 0, 0, 0.08);
-          transform: translateY(-4px);
-        }
-
-        .media-card ul {
-          padding-left: 18px;
-          margin: 10px 0 12px;
-          color: var(--muted);
-          line-height: 1.7;
         }
 
         .pill-row {
@@ -882,67 +724,86 @@ export default function HomePage() {
         .pill {
           padding: 8px 12px;
           border-radius: 999px;
-          background: rgba(194, 123, 22, 0.12);
-          color: var(--cream);
+          background: rgba(194, 123, 22, 0.22);
+          color: #f7efe2;
           border: 1px solid rgba(194, 123, 22, 0.35);
           font-weight: 600;
         }
 
         .pill.alt {
-          background: rgba(199, 63, 63, 0.12);
-          color: var(--accent);
+          background: rgba(199, 63, 63, 0.22);
+          color: #f0c777;
           border-color: rgba(199, 63, 63, 0.26);
         }
 
-        .pill.active {
-          background: linear-gradient(135deg, #f6c979, #f0a437);
-          color: #3b2109;
-          border-color: transparent;
-          box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
+        .reveal {
+          opacity: 0;
+          transform: translateY(26px);
+          transition: transform 0.6s ease, opacity 0.6s ease;
         }
 
-        .location-tabs {
-          display: flex;
-          justify-content: center;
-          gap: 8px;
-          flex-wrap: wrap;
-          margin: 18px 0;
+        .reveal-left {
+          transform: translateX(-60px);
         }
 
-        .location-card {
-          background: rgba(255, 255, 255, 0.92);
-          border-radius: 16px;
-          border: 1px solid var(--border);
+        .reveal-right {
+          transform: translateX(60px);
+        }
+
+        .reveal.in-view {
+          opacity: 1;
+          transform: translate(0, 0);
+        }
+
+        .modal {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.6);
           display: grid;
-          gap: 10px;
+          place-items: center;
           padding: 18px;
-          box-shadow: 0 16px 30px rgba(0, 0, 0, 0.08);
+          z-index: 200;
+          backdrop-filter: blur(4px);
         }
 
-        .location-meta {
+        .modal__content {
+          background: rgba(0, 0, 0, 0.78);
+          border-radius: 18px;
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+          width: min(720px, 100%);
+          max-height: 90vh;
+          overflow: auto;
+          padding: 22px;
           display: grid;
-          gap: 6px;
-          justify-items: center;
+          gap: 16px;
         }
 
-        .location-meta a {
-          color: var(--accent);
-          font-weight: 700;
-          text-decoration: none;
+        .modal__header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
         }
 
-        .location-meta a:hover {
-          text-decoration: underline;
+        .icon-btn {
+          border: 1px solid rgba(255, 255, 255, 0.24);
+          background: rgba(255, 255, 255, 0.08);
+          border-radius: 12px;
+          width: 40px;
+          height: 40px;
+          font-size: 18px;
+          color: #fff;
         }
 
         .form {
-          background: var(--panel);
-          border: 1px solid var(--border);
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.14);
           border-radius: 16px;
           padding: 22px;
           display: grid;
           gap: 16px;
-          box-shadow: 0 12px 26px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 12px 26px rgba(0, 0, 0, 0.36);
         }
 
         .form-grid {
@@ -955,18 +816,18 @@ export default function HomePage() {
           display: grid;
           gap: 6px;
           font-weight: 700;
-          color: var(--cream);
+          color: #f7efe2;
         }
 
         input,
         textarea {
           border-radius: 12px;
-          border: 1px solid var(--border);
+          border: 1px solid rgba(255, 255, 255, 0.22);
           padding: 12px;
           font-size: 15px;
           font-family: inherit;
-          background: #fff;
-          color: var(--text);
+          background: rgba(0, 0, 0, 0.55);
+          color: #fff;
         }
 
         textarea {
@@ -988,11 +849,11 @@ export default function HomePage() {
         }
 
         .status.success {
-          color: #2f7a36;
+          color: #8add95;
         }
 
         .status.error {
-          color: #b22626;
+          color: #ff8f8f;
         }
 
         .btn[disabled] {
@@ -1000,202 +861,17 @@ export default function HomePage() {
           cursor: not-allowed;
         }
 
-        .forms-columns {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 16px;
-          align-items: stretch;
-        }
-
-        .form-card {
-          background: rgba(255, 255, 255, 0.94);
-          border: 1px solid var(--border);
-          border-radius: 18px;
-          padding: 16px;
-          display: grid;
-          gap: 12px;
-          box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
-        }
-
-        .form-card__head {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        .gallery-window {
-          display: grid;
-          grid-template-columns: auto 1fr auto;
-          align-items: center;
-          gap: 12px;
-          max-width: 1060px;
-          margin: 0 auto;
-        }
-
-        .gallery-main {
-          position: relative;
-          width: 100%;
-          min-height: 380px;
-          border-radius: 16px;
-          overflow: hidden;
-          border: 1px solid var(--border);
-          box-shadow: 0 18px 36px rgba(0, 0, 0, 0.12);
-          background: #fff;
-          display: grid;
-          place-items: center;
-        }
-
-        .gallery-caption {
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          padding: 10px 14px 12px;
-          background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.38));
-          color: #fff;
-          font-weight: 600;
-          letter-spacing: 0.01em;
-        }
-
-        .gallery-arrow {
-          width: 44px;
-          height: 44px;
-          border-radius: 12px;
-          border: 1px solid var(--border);
-          background: rgba(255, 255, 255, 0.85);
-          font-size: 20px;
-          color: var(--cream);
-          display: grid;
-          place-items: center;
-          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-        }
-
-        .gallery-arrow:hover {
-          border-color: var(--gold);
-        }
-
-        .reveal {
-          opacity: 0;
-          transform: translateY(26px);
-          transition: transform 0.6s ease, opacity 0.6s ease;
-        }
-
-        .reveal.reveal-left {
-          transform: translateX(-26px);
-        }
-
-        .reveal.reveal-right {
-          transform: translateX(26px);
-        }
-
-        .reveal.reveal-up {
-          transform: translateY(26px);
-        }
-
-        .reveal.in-view {
-          opacity: 1;
-          transform: translate(0, 0);
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .reveal {
-            opacity: 1;
-            transform: none;
-            transition: none;
-          }
-
-          .gallery-rail {
-            transition: none;
-          }
-        }
-
-        .modal {
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.35);
-          display: grid;
-          place-items: center;
-          padding: 18px;
-          z-index: 200;
-          backdrop-filter: blur(4px);
-        }
-
-        .modal__content {
-          background: rgba(255, 255, 255, 0.9);
-          border-radius: 18px;
-          border: 1px solid var(--border);
-          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-          width: min(720px, 100%);
-          max-height: 90vh;
-          overflow: auto;
-          padding: 22px;
-          display: grid;
-          gap: 16px;
-        }
-
-        .modal__header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-        }
-
-        .icon-btn {
-          border: 1px solid var(--border);
-          background: rgba(255, 255, 255, 0.7);
-          border-radius: 12px;
-          width: 40px;
-          height: 40px;
-          font-size: 18px;
-          color: var(--cream);
-        }
-
         @media (max-width: 980px) {
           .page {
-            gap: 0;
             padding-top: 82px;
           }
 
           .hero {
-            min-height: 70vh;
-          }
-
-          .with-bg::before {
-            background-attachment: scroll;
+            min-height: 90vh;
           }
 
           .panel__content {
-            padding: 46px 18px;
-          }
-
-          .panel,
-          .panel.alt {
-            padding-inline: 18px;
-          }
-
-          .experience-layout {
-            grid-template-columns: 1fr;
-          }
-
-          .experience-intro {
-            text-align: center;
-            margin: 0 auto;
-          }
-
-          .experience-media-grid {
-            margin-top: 10px;
-          }
-
-          .experience-media {
-            min-height: 220px;
-          }
-
-          .card-grid {
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          }
-
-          .gallery-slide {
-            flex-basis: 88%;
+            padding: 36px 18px 28px;
           }
         }
       `}</style>

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Chrome, Facebook, Instagram } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 import { locations, useLocation } from "../context/LocationContext";
 
 export default function Footer() {
@@ -71,24 +71,24 @@ export default function Footer() {
             <br /> <a href={`mailto:${activeEmail}`}>{activeEmail}</a>
           </p>
           <div className="footer__socials">
-            <a href="https://www.facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+            <a href="https://www.facebook.com/p/Rajni-Madison-61555122544407/" target="_blank" rel="noreferrer" aria-label="Facebook">
               <Facebook size={18} />
             </a>
             <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
               <Instagram size={18} />
             </a>
             <a
-              href="https://www.google.com/search?q=rajni+indian+cuisine&rlz=1C1GCEA_enUS1098US1098&oq=rajni+indian+cuisine+&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg7MhIIAhAuGCcYrwEYxwEYgAQYigUyBwgDEAAYgAQyDQgEEC4YrwEYxwEYgAQyDQgFEC4YrwEYxwEYgAQyBggGEEUYPDIGCAcQRRg90gEINTYyOWowajeoAgCwAgA&sourceid=chrome&ie=UTF-8&zx=1764727739037&no_sw_cr=1"
+              className="google-g"
+              href="https://www.google.com/search?q=rajni+indian+cuisine+madison+wi"
               target="_blank"
               rel="noreferrer"
               aria-label="Google"
             >
-              <Chrome size={18} />
+              G
             </a>
           </div>
           <div className="footer__links">
-            <a href="#reserve">Reserve</a>
-            <a href="#contact">Catering</a>
+            <a href="#catering">Catering</a>
             {active.order ? (
               <a className="cta" href={active.order} target="_blank" rel="noreferrer">
                 Order Online -{">"}
@@ -106,11 +106,12 @@ export default function Footer() {
 
       <style jsx>{`
         .footer {
-          background: rgba(255, 255, 255, 0.78);
+          background: rgba(76, 45, 28, 0.7);
           padding: 44px 18px 24px;
-          border-top: 1px solid var(--border);
-          color: var(--muted);
+          border-top: 1px solid rgba(255, 255, 255, 0.12);
+          color: #f7efe2;
           font-size: 13px;
+          backdrop-filter: blur(4px);
         }
 
         .footer__inner {
@@ -129,7 +130,7 @@ export default function Footer() {
 
         .footer__brand p {
           font-weight: 700;
-          color: var(--cream);
+          color: #f7efe2;
           margin: 0 0 6px;
         }
 
@@ -152,7 +153,7 @@ export default function Footer() {
         }
 
         a {
-          color: var(--accent);
+          color: #f0c777;
           text-decoration: none;
           font-size: 13px;
         }
@@ -168,7 +169,7 @@ export default function Footer() {
         }
 
         .footer__links a {
-          color: var(--cream);
+          color: #f7efe2;
         }
 
         .footer__links a.cta {
@@ -193,6 +194,19 @@ export default function Footer() {
           color: var(--muted);
         }
 
+        .footer__socials .google-g {
+          font-weight: 800;
+          font-size: 14px;
+          width: 34px;
+          height: 34px;
+          border-radius: 10px;
+          border: 1px solid var(--border);
+          display: grid;
+          place-items: center;
+          background: rgba(255, 255, 255, 0.8);
+          color: var(--muted);
+        }
+
         .footer__socials a:hover {
           color: var(--cream);
           border-color: var(--gold);
@@ -209,13 +223,13 @@ export default function Footer() {
           gap: 4px;
           padding: 10px 12px;
           border-radius: 12px;
-          background: rgba(255, 255, 255, 0.8);
+          background: rgba(206, 197, 197, 0.78);
           border: 1px solid var(--border);
           box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
         }
 
         .footer__location--list {
-          background: rgba(255, 255, 255, 0.6);
+          background: rgba(206, 197, 197, 0.78);
         }
 
         .footer__location-buttons {
@@ -229,7 +243,7 @@ export default function Footer() {
           padding: 8px 10px;
           border-radius: 999px;
           border: 1px solid var(--border);
-          background: #fff;
+          background: #ffffffff;
           text-align: center;
           font-weight: 700;
         }
