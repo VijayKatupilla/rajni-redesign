@@ -288,7 +288,8 @@ export default function Navbar() {
           right: -100%;
           height: 100vh;
           width: min(320px, 80%);
-          background: #fff8ee;
+          background: linear-gradient(180deg, rgba(76, 45, 28, 0.96), rgba(76, 45, 28, 0.9));
+          color: #f7efe2;
           z-index: 120;
           padding: 24px 22px;
           display: flex;
@@ -329,14 +330,14 @@ export default function Navbar() {
         }
 
         .drawer-links a {
-          color: var(--muted);
+          color: rgba(247, 239, 226, 0.78);
           font-weight: 600;
           letter-spacing: 0.04em;
           text-decoration: none;
         }
 
         .drawer-links a:hover {
-          color: var(--text);
+          color: #f7efe2;
         }
 
         .drawer-actions {

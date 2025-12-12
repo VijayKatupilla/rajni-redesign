@@ -873,6 +873,26 @@ export default function HomePage() {
           .panel__content {
             padding: 36px 18px 28px;
           }
+
+          .about__layout,
+          .menu__layout {
+            grid-template-columns: 1fr;
+          }
+
+          .about__media,
+          .menu__media {
+            max-width: 100%;
+            width: 100%;
+            align-self: stretch;
+            justify-self: center;
+          }
+
+          .about__image,
+          .menu__image {
+            height: auto;
+            min-height: 260px;
+            aspect-ratio: 4 / 3;
+          }
         }
       `}</style>
     </div>

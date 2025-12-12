@@ -84,16 +84,16 @@ export default function MobileBottomNav() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 9px 10px;
+          padding: 7px 9px;
           border-radius: 10px;
           border: 1px solid rgba(0, 0, 0, 0.08);
           background: rgba(255, 255, 255, 0.92);
           color: #1b1209;
           font-weight: 700;
-          letter-spacing: 0.02em;
+          letter-spacing: 0.01em;
           text-decoration: none;
           text-transform: uppercase;
-          font-size: 11px;
+          font-size: 10px;
         }
 
         .mobile-nav__link:active {
