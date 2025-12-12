@@ -314,32 +314,11 @@ export default function HomePage() {
 
       <style jsx>{`
         .page {
-          position: relative;
           display: flex;
           flex-direction: column;
           gap: 0;
           padding-top: 96px;
           background: #000;
-        }
-
-        .page::before {
-          content: "";
-          position: fixed;
-          inset: 0;
-          z-index: -2;
-          background-image: url(${sharedBg});
-          background-size: cover;
-          background-position: center center;
-          background-repeat: no-repeat;
-        }
-
-        .page::after {
-          content: "";
-          position: fixed;
-          inset: 0;
-          z-index: -1;
-          background: rgba(0, 0, 0, 0.35);
-          pointer-events: none;
         }
 
         .hero {
@@ -534,7 +513,7 @@ export default function HomePage() {
         .with-bg {
           isolation: isolate;
           overflow: hidden;
-          background-attachment: initial;
+          background-attachment: fixed;
         }
 
         .hero.with-bg::before {
@@ -542,7 +521,15 @@ export default function HomePage() {
         }
 
         .with-bg::before {
-          content: none;
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-image: var(--panel-bg);
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          z-index: -2;
         }
 
         .with-bg::after {
@@ -877,6 +864,7 @@ export default function HomePage() {
         @media (max-width: 980px) {
           .page {
             padding-top: 82px;
+            position: relative;
           }
 
           .hero {
@@ -892,9 +880,30 @@ export default function HomePage() {
             grid-template-columns: 1fr;
           }
 
-          .with-bg::before {
-            background-attachment: scroll;
+          /* Mobile: use a single shared background behind the whole page */
+          .page::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: url(${sharedBg});
+            background-size: cover;
             background-position: center top;
+            background-repeat: no-repeat;
+            pointer-events: none;
+          }
+
+          .page::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: rgba(0, 0, 0, 0.32);
+            pointer-events: none;
+          }
+
+          .with-bg::before {
+            content: none;
           }
 
           .about__media,
