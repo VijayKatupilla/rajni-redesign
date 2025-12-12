@@ -272,7 +272,7 @@ export default function Footer() {
 
         @media (max-width: 720px) {
           .footer {
-            padding: 32px 16px 22px;
+            padding: 20px 16px 20px;
           }
         }
       `}</style>
