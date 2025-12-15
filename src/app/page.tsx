@@ -878,12 +878,13 @@ export default function HomePage() {
 
         @media (max-width: 980px) {
           .page {
-            padding-top: 82px;
+            padding-top: 0;
             position: relative;
           }
 
           .hero {
             min-height: 90vh;
+            padding-top: 82px;
           }
 
           .panel__content {
