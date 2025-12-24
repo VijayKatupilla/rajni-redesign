@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap");
 
 :root {
   --bg: #000000;
@@ -9,8 +9,8 @@
   --muted: rgba(255, 255, 255, 0.78);
   --accent: #f0c777;
   --border: rgba(255, 255, 255, 0.18);
-  --heading-font: "Montserrat", "Helvetica Neue", system-ui, -apple-system, sans-serif;
-  --body-font: "Montserrat", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  --heading-font: "Jost", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  --body-font: "Source Sans 3", "Helvetica Neue", system-ui, -apple-system, sans-serif;
 }
 
 * {
@@ -52,8 +52,8 @@ h4,
 h5,
 h6 {
   font-family: var(--heading-font);
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
