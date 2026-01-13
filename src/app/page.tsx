@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import GoogleReviews from "../components/GoogleReviews";
 
 const heroReel = [
@@ -20,11 +20,6 @@ const heroReel = [
 const sharedBg = "/images/gallery-2.0.jpg";
 
 export default function HomePage() {
-  const [isCateringOpen, setIsCateringOpen] = useState(false);
-  const [cateringStatus, setCateringStatus] = useState<{ state: "idle" | "loading" | "success" | "error"; message?: string; ref?: string }>({
-    state: "idle",
-  });
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) =>
@@ -36,29 +31,6 @@ export default function HomePage() {
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
-
-  const handleCateringSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (cateringStatus.state === "loading") return;
-
-    const form = e.currentTarget;
-    const payload = Object.fromEntries(new FormData(form).entries());
-
-    setCateringStatus({ state: "loading" });
-    try {
-      const res = await fetch("/api/catering", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Something went wrong");
-      setCateringStatus({ state: "success", message: data?.message, ref: data?.reference });
-      form.reset();
-    } catch (error: any) {
-      setCateringStatus({ state: "error", message: error?.message || "Failed to submit catering request" });
-    }
-  };
 
   return (
     <div className="page">
@@ -195,7 +167,7 @@ export default function HomePage() {
             </div>
             <div className="card">
               <h3>Need help?</h3>
-              <p className="muted">Call and we’ll guide you through the menu.</p>
+              <p className="muted">Call and we'll guide you through the menu.</p>
               <a className="btn secondary" href="tel:+16081234567">
                 Call Rajni Madison
               </a>
@@ -221,7 +193,7 @@ export default function HomePage() {
           <div className="card-grid">
             {[
               { title: "Weekend Chef's Thali", tag: "Sat + Sun", desc: "Rotating curries, house pickle, dessert for two." },
-              { title: "Express Lunch", tag: "Weekdays 11-2:30", desc: "Fast plates with naan and salad—perfect mid-day." },
+              { title: "Express Lunch", tag: "Weekdays 11-2:30", desc: "Fast plates with naan and salad - perfect mid-day." },
               { title: "Two Curry Combo", tag: "All Week", desc: "Choose any two curries with rice, naan, and chutneys." },
             ].map((item) => (
               <div key={item.title} className="card reveal reveal-up">
@@ -239,80 +211,28 @@ export default function HomePage() {
       <section id="catering" className="panel with-bg" style={{ ["--panel-bg" as string]: `url(${sharedBg})` }}>
         <div className="panel__content reveal reveal-up">
           <h2 className="section-title center">Catering & Events</h2>
-          <p className="lede narrow">Tell us about your occasion and guest count; we’ll tailor the menu and service style.</p>
+          <p className="lede narrow">
+            Tell us about your occasion and guest count; we'll tailor the menu and service style.
+          </p>
           <div className="card focus">
             <div className="pill-row">
               <span className="pill">Staffed</span>
               <span className="pill alt">Buffet or plated</span>
             </div>
+            <p className="muted">Reach our catering team directly to plan your menu and service style.</p>
             <div className="hero__actions">
-              <button type="button" className="btn secondary" onClick={() => setIsCateringOpen(true)}>
-                Open Catering Form
-              </button>
+              <a className="btn primary" href="tel:+16081234567">
+                Call (608) 123-4567
+              </a>
+              <a className="btn secondary" href="mailto:info@rajnimadison.com">
+                Email Catering
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       <GoogleReviews />
-
-      {isCateringOpen && (
-        <div className="modal" role="dialog" aria-modal="true" aria-label="Catering form" onClick={() => setIsCateringOpen(false)}>
-          <div className="modal__content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal__header">
-              <h3>Catering inquiry</h3>
-              <button className="icon-btn" onClick={() => setIsCateringOpen(false)} aria-label="Close catering form">
-                X
-              </button>
-            </div>
-            <form className="form" onSubmit={handleCateringSubmit}>
-              <div className="form-grid">
-                <label>
-                  Name
-                  <input name="name" placeholder="Your name" required />
-                </label>
-                <label>
-                  Email
-                  <input type="email" name="email" placeholder="you@example.com" required />
-                </label>
-                <label>
-                  Phone
-                  <input name="phone" placeholder="(555) 555-5555" required />
-                </label>
-                <label>
-                  Event Type
-                  <input name="type" placeholder="Wedding, corporate lunch, birthday" required />
-                </label>
-                <label>
-                  Guest Count
-                  <input type="number" name="guests" min="10" max="400" placeholder="80" required />
-                </label>
-                <label>
-                  Date
-                  <input type="date" name="date" required />
-                </label>
-                <label className="full">
-                  Notes
-                  <textarea name="notes" rows={3} placeholder="Service style, venue, cuisine preferences" />
-                </label>
-              </div>
-              <div className="status-row">
-                {cateringStatus.state === "success" && (
-                  <span className="status success">
-                    {cateringStatus.message || "Catering request received."} Ref: {cateringStatus.ref}
-                  </span>
-                )}
-                {cateringStatus.state === "error" && (
-                  <span className="status error">{cateringStatus.message || "Unable to send right now."}</span>
-                )}
-              </div>
-              <button type="submit" className="btn primary" disabled={cateringStatus.state === "loading"}>
-                {cateringStatus.state === "loading" ? "Sending..." : "Submit Catering Request"}
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
 
       <style jsx>{`
         .page {
@@ -539,7 +459,7 @@ export default function HomePage() {
           content: "";
           position: absolute;
           inset: 0;
-          background: rgba(0, 0, 0, 0.32);
+          background: rgba(0, 0, 0, 0.55);
           z-index: -1;
         }
 
@@ -555,7 +475,7 @@ export default function HomePage() {
         #menu.with-bg::after,
         #specials.with-bg::after,
         #catering.with-bg::after {
-          background: transparent;
+          background: rgba(0, 0, 0, 0.55);
         }
 
         #order.with-bg::before {
@@ -768,112 +688,6 @@ export default function HomePage() {
         .reveal.in-view {
           opacity: 1;
           transform: translate(0, 0);
-        }
-
-        .modal {
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.6);
-          display: grid;
-          place-items: center;
-          padding: 18px;
-          z-index: 200;
-          backdrop-filter: blur(4px);
-        }
-
-        .modal__content {
-          background: rgba(0, 0, 0, 0.78);
-          border-radius: 18px;
-          border: 1px solid rgba(255, 255, 255, 0.16);
-          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
-          width: min(720px, 100%);
-          max-height: 90vh;
-          overflow: auto;
-          padding: 22px;
-          display: grid;
-          gap: 16px;
-        }
-
-        .modal__header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-        }
-
-        .icon-btn {
-          border: 1px solid rgba(255, 255, 255, 0.24);
-          background: rgba(255, 255, 255, 0.08);
-          border-radius: 12px;
-          width: 40px;
-          height: 40px;
-          font-size: 18px;
-          color: #fff;
-        }
-
-        .form {
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          border-radius: 16px;
-          padding: 22px;
-          display: grid;
-          gap: 16px;
-          box-shadow: 0 12px 26px rgba(0, 0, 0, 0.36);
-        }
-
-        .form-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 14px;
-        }
-
-        label {
-          display: grid;
-          gap: 6px;
-          font-weight: 700;
-          color: #f7efe2;
-        }
-
-        input,
-        textarea {
-          border-radius: 12px;
-          border: 1px solid rgba(255, 255, 255, 0.22);
-          padding: 12px;
-          font-size: 15px;
-          font-family: inherit;
-          background: rgba(0, 0, 0, 0.55);
-          color: #fff;
-        }
-
-        textarea {
-          resize: vertical;
-        }
-
-        label.full {
-          grid-column: 1 / -1;
-        }
-
-        .status-row {
-          min-height: 20px;
-        }
-
-        .status {
-          display: inline-block;
-          font-weight: 700;
-          font-size: 13px;
-        }
-
-        .status.success {
-          color: #8add95;
-        }
-
-        .status.error {
-          color: #ff8f8f;
-        }
-
-        .btn[disabled] {
-          opacity: 0.7;
-          cursor: not-allowed;
         }
 
         @media (max-width: 980px) {
