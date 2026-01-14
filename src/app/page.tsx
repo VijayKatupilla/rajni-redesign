@@ -63,7 +63,7 @@ export default function HomePage() {
             <span className="hero__title-small">Indian Cuisine</span>
           </h1>
           <p className="lede">
-            A bright, celebratory dining room with handcrafted masalas, cocktails, and catering for nights that linger.
+            A bright, celebratory dining room with handcrafted masalas, drinks, and catering for nights that linger.
           </p>
           <div className="hero__actions">
             <a className="btn primary" href="#order">
@@ -96,8 +96,9 @@ export default function HomePage() {
           <div className="about__content">
             <h2 className="section-title">About Us</h2>
             <p className="lede narrow">
-              Family recipes, red lounge seating, and playlists tuned to golden hour. Rajni blends small-batch curries with a modern,
-              celebratory spirit.
+              About Rajni: We are an authentic Indian restaurant group in across the US, providing customers with an unforgettable dining
+              experience using only the freshest and highest quality ingredients since 2011. Founded in Parsippany, NJ in 2011, we have
+              locations in Parsippany (NJ), Atlanta (GA), Madison (WI) and Bensalem (PA) with Brookfield (WI) coming soon!
             </p>
             <div className="grid stack">
               <div className="card reveal reveal-left">
@@ -118,12 +119,14 @@ export default function HomePage() {
           <div className="menu__content">
             <h2 className="section-title">Menu</h2>
             <p className="lede narrow">
-              Explore tandoor platters, street snacks, and slow-braised curries. Browse the current menu or order directly online.
+              Explore tandoor platters, south Indian tiffins and dosas, authentic kothu parottas, and slow-braised curries. Browse the
+              current menu or order directly online.
             </p>
             <div className="pill-row">
               <span className="pill alt">Vegetarian & Vegan</span>
               <span className="pill">Tandoor & Grills</span>
-              <span className="pill">Street Snacks</span>
+              <span className="pill">Tiffins & Dosas</span>
+              <span className="pill">Kothu Parottas</span>
             </div>
             <div className="hero__actions">
               <a
@@ -194,7 +197,7 @@ export default function HomePage() {
             {[
               { title: "Weekend Chef's Thali", tag: "Sat + Sun", desc: "Rotating curries, house pickle, dessert for two." },
               { title: "Express Lunch", tag: "Weekdays 11-2:30", desc: "Fast plates with naan and salad - perfect mid-day." },
-              { title: "Two Curry Combo", tag: "All Week", desc: "Choose any two curries with rice, naan, and chutneys." },
+              { title: "Two Curry Combo", tag: "Weekdays 11-2:30", desc: "Choose any two curries with rice, naan, and chutneys." },
             ].map((item) => (
               <div key={item.title} className="card reveal reveal-up">
                 <div className="pill-row">
@@ -377,6 +380,7 @@ export default function HomePage() {
 
         .lede.narrow {
           max-width: 760px;
+          margin-bottom: 16px;
         }
 
         .hero__actions {
@@ -565,6 +569,11 @@ export default function HomePage() {
           box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
         }
 
+        /* Brighten About image to feel more vivid */
+        .about__image :global(img) {
+          filter: brightness(1.12) saturate(1.08) contrast(1.05);
+        }
+
         /* Adjust about layout sizing and image fit */
         .about__layout {
           display: grid;
@@ -734,7 +743,7 @@ export default function HomePage() {
 
           .about__image :global(img),
           .menu__image :global(img) {
-            filter: brightness(1.08) contrast(1.08);
+            filter: brightness(1.12) saturate(1.08) contrast(1.05);
           }
         }
       `}</style>
