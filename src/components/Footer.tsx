@@ -47,7 +47,7 @@ export default function Footer() {
             <a href={active.map} target="_blank" rel="noreferrer">
               View map -&gt;
             </a>
-            <a href={`tel:${active.phone.replace(/[^\d]/g, "")}`}>{active.phone}</a>
+            <a href="tel:6088213362">(608) 821-3362</a>
           </div>
         </div>
 
