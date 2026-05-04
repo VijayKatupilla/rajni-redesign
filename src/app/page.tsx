@@ -171,7 +171,7 @@ export default function HomePage() {
             <div className="card">
               <h3>Need help?</h3>
               <p className="muted">Call and we'll guide you through the menu.</p>
-              <a className="btn secondary" href="tel:+16081234567">
+              <a className="btn secondary" href="tel:+16088213362">
                 Call Rajni Madison
               </a>
             </div>
@@ -224,8 +224,8 @@ export default function HomePage() {
             </div>
             <p className="muted">Reach our catering team directly to plan your menu and service style.</p>
             <div className="hero__actions">
-              <a className="btn primary" href="tel:+16081234567">
-                Call (608) 123-4567
+              <a className="btn primary" href="tel:+16088213362">
+                Call (608) 821-3362
               </a>
               <a className="btn secondary" href="mailto:info@rajnimadison.com">
                 Email Catering
