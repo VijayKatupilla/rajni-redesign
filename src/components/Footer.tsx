@@ -1,8 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { Facebook, Instagram } from "lucide-react";
 import { locations } from "../context/LocationContext";
+import { Facebook, Instagram } from "lucide-react";
+
+const footerLocations = [
+  {
+    name: "Rajni Madison",
+    address: "429 Commerce Drive, Madison, WI 53719",
+    map: "https://www.google.com/maps/place/Rajni+Indian+Cuisine,+429+Commerce+Dr,+Madison,+WI+53719",
+    phone: "(608) 821-3362",
+  },
+  {
+    name: "Rajni Atlanta",
+    address: "Peachtree Street, Atlanta, GA",
+    map: "https://maps.google.com",
+    phone: "(470) 555-1212",
+  },
+  {
+    name: "Rajni Parsippany",
+    address: "Morris Corporate Center, Parsippany, NJ",
+    map: "https://maps.google.com",
+    phone: "(973) 555-2020",
+  },
+];
 
 export default function Footer() {
   const active = locations[0];
@@ -46,8 +67,8 @@ export default function Footer() {
         <div className="footer__group">
           <h3>Contact & Links</h3>
           <p>
-            <a href={`tel:${phoneHref}`}>{active.phone}</a>
-            <br /> <a href={`mailto:${activeEmail}`}>{activeEmail}</a>
+            <a href="tel:+16088213362">📞 (608) 821-3362</a>
+            <br /> <a href="mailto:info@rajnimadison.com">✉️ info@rajnimadison.com</a>
           </p>
           <div className="footer__socials">
             <a href="https://www.facebook.com/p/Rajni-Madison-61555122544407/" target="_blank" rel="noreferrer" aria-label="Facebook">
